@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.TlCompanyUnionInfoDao">
+
+	<sql id="tlCompanyUnionInfoColumns">
+		a.id AS "id",
+		a.table_name AS "tableName",
+		a.product_name AS
+		"productName",
+		a.product_version AS "productVersion",
+		a.product_imgs AS
+		"productImgs",
+		a.configure_type AS "configureType",
+		a.configure_img AS
+		"configureImg",
+		a.configure_title AS "configureTitle",
+		a.configure_content AS "configureContent",
+		a.auth1_img AS "auth1Img",
+		a.auth1_content AS "auth1Content",
+		a.auth2_img AS "auth2Img",
+		a.auth2_content AS "auth2Content",
+		a.auth3_img AS "auth3Img",
+		a.auth3_content AS "auth3Content",
+		a.user_id AS "user.id",
+		a.flag AS
+		"flag",
+		a.hotflag AS "hotflag",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.modifiable AS
+		"modifiable",
+		a.company_id AS "companyId",
+		a.order_no AS "orderNo",
+		a.approval_remark AS "approvalRemark",
+		a.productintro AS
+		"productintro",
+		u16.name AS "user.name",
+		case
+		when a.auth3_img='||' then 0
+		else 1
+		end au3Flag
+	</sql>
+
+	<sql id="tlCompanyUnionInfoJoins">
+		LEFT JOIN sys_user u16 ON u16.id = a.user_id
+	</sql>
+
+	<select id="get" resultType="TlCompanyUnionInfo">
+		SELECT
+		<include refid="tlCompanyUnionInfoColumns" />
+		FROM tl_company_union_info a
+		<include refid="tlCompanyUnionInfoJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="TlCompanyUnionInfo">
+		SELECT
+		<include refid="tlCompanyUnionInfoColumns" />
+		FROM tl_company_union_info a
+		<include refid="tlCompanyUnionInfoJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="tableName != null and tableName != ''">
+				AND a.table_name LIKE
+				<if test="dbName == 'oracle'">'%'||#{tableName}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{tableName}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{tableName},'%')</if>
+			</if>
+			<if test="productName != null and productName != ''">
+				AND a.product_name LIKE
+				<if test="dbName == 'oracle'">'%'||#{productName}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{productName}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{productName},'%')</if>
+			</if>
+			<if test="productVersion != null and productVersion != ''">
+				AND a.product_version LIKE
+				<if test="dbName == 'oracle'">'%'||#{productVersion}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{productVersion}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{productVersion},'%')</if>
+			</if>
+			<if test="flag != null and flag != '' and flag !=4">
+				AND a.flag = #{flag}
+			</if>
+			<if test="flag != null and flag != '' and flag == 4">
+				AND (a.flag = '1' or a.flag = '2')
+			</if>
+			<if test="modifiable != null and modifiable != ''">
+				AND a.modifiable = #{modifiable}
+			</if>
+			<if test="hotflag != null and hotflag != ''">
+				AND a.hotflag = #{hotflag}
+			</if>
+			<if test="user != null and user.id != null and user.id != ''">
+				AND a.user_id = #{user.id}
+			</if>
+		</where>
+		ORDER BY a.hotflag DESC,a.order_no,au3Flag DESC,a.create_date DESC
+	</select>
+
+	<select id="findAllList" resultType="TlCompanyUnionInfo">
+		SELECT
+		<include refid="tlCompanyUnionInfoColumns" />
+		FROM tl_company_union_info a
+		<include refid="tlCompanyUnionInfoJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		ORDER BY a.order_no,a.create_date DESC
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_company_union_info(
+		id,
+		table_name,
+		product_name,
+		product_version,
+		product_imgs,
+		configure_type,
+		configure_img,
+		configure_title,
+		configure_content,
+		auth1_img,
+		auth1_content,
+		auth2_img,
+		auth2_content,
+		auth3_img,
+		auth3_content,
+		user_id,
+		flag,
+		create_date,
+		update_date,
+		del_flag,
+		modifiable,
+		company_id,
+		hotflag,
+		order_no,
+		productintro
+		) VALUES (
+		#{id},
+		#{tableName},
+		#{productName},
+		#{productVersion},
+		#{productImgs},
+		#{configureType},
+		#{configureImg},
+		#{configureTitle},
+		#{configureContent},
+		#{auth1Img},
+		#{auth1Content},
+		#{auth2Img},
+		#{auth2Content},
+		#{auth3Img},
+		#{auth3Content},
+		#{user.id},
+		#{flag},
+		#{createDate},
+		#{updateDate},
+		#{delFlag},
+		#{modifiable},
+		#{companyId},
+		#{hotflag},
+		#{orderNo},
+		#{productintro}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_company_union_info SET
+		table_name = #{tableName},
+		product_name = #{productName},
+		product_version = #{productVersion},
+		product_imgs = #{productImgs},
+		configure_type = #{configureType},
+		configure_img = #{configureImg},
+		configure_title = #{configureTitle},
+		configure_content = #{configureContent},
+		auth1_img = #{auth1Img},
+		auth1_content = #{auth1Content},
+		auth2_img = #{auth2Img},
+		auth2_content = #{auth2Content},
+		auth3_img = #{auth3Img},
+		auth3_content = #{auth3Content},
+		user_id = #{user.id},
+		flag = #{flag},
+		update_date = #{updateDate},
+		modifiable = #{modifiable},
+		hotflag = #{hotflag},
+		productintro = #{productintro},
+		<if test="orderNo != null and orderNo != ''">
+			order_no = #{orderNo},
+		</if>
+		<if test="approvalRemark != null and approvalRemark != ''">
+			approval_remark=#{approvalRemark},
+		</if>
+		company_id=#{companyId}
+
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE tl_company_union_info SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	<update id="batchDel">
+		UPDATE tl_company_union_info SET
+		del_flag = 1
+		WHERE id IN
+		<foreach collection="array" item="id" index="no" open="("
+			separator="," close=")">
+			#{id}
+		</foreach>
+
+	</update>
+	<select id="findListForAppPreSetAdd" resultType="TlCompanyUnionInfo">
+		SELECT
+		<include refid="tlCompanyUnionInfoColumns" />
+		FROM tl_company_union_info a
+		<include refid="tlCompanyUnionInfoJoins" />
+		where
+		a.del_flag = 0
+		and a.id not in (select ta.union_id from TL_APPPRESET ta where
+		ta.union_id is not null)
+		ORDER BY a.order_no,a.create_date DESC
+	</select>
+	<select id="userunioninfoqry" resultType="TlCompanyUnionInfo">
+		SELECT
+		<include refid="tlCompanyUnionInfoColumns" />
+		FROM tl_company_union_info a
+		<include refid="tlCompanyUnionInfoJoins" />
+		LEFT JOIN tl_company_info c ON a.company_id=c.id
+		where
+		a.del_flag = 0 and a.flag=2
+		<if
+			test="modelInfo != null and modelInfo.title != null and modelInfo.title != ''">
+			and (a.product_name like '%'||#{modelInfo.title}||'%'
+			or a.product_version like '%'||#{modelInfo.title}||'%'
+			or c.factory_name like '%'||#{modelInfo.title}||'%'
+			or a.configure_content like '%'||#{modelInfo.title}||'%'
+			or a.productintro like '%'||#{modelInfo.title}||'%')
+		</if>
+		<if
+			test="modelInfo != null and modelInfo.pp != null and modelInfo.pp != ''">
+			and (a.product_name like '%'||#{modelInfo.pp}||'%'
+			or a.product_version like '%'||#{modelInfo.pp}||'%'
+			or c.factory_name like '%'||#{modelInfo.pp}||'%'
+			or a.configure_content like '%'||#{modelInfo.pp}||'%'
+			or a.productintro like '%'||#{modelInfo.pp}||'%')
+		</if>
+		<if
+			test="modelInfo != null and modelInfo.nc != null and modelInfo.nc != ''">
+			and (a.product_name like '%'||#{modelInfo.nc}||'%'
+			or a.product_version like '%'||#{modelInfo.nc}||'%'
+			or c.factory_name like '%'||#{modelInfo.nc}||'%'
+			or a.configure_content like '%'||#{modelInfo.nc}||'%'
+			or a.productintro like '%'||#{modelInfo.nc}||'%')
+		</if>
+		<if
+			test="modelInfo != null and modelInfo.cc != null and modelInfo.cc != ''">
+			and (a.product_name like '%'||#{modelInfo.cc}||'%'
+			or a.product_version like '%'||#{modelInfo.cc}||'%'
+			or c.factory_name like '%'||#{modelInfo.cc}||'%'
+			or a.configure_content like '%'||#{modelInfo.cc}||'%'
+			or a.productintro like '%'||#{modelInfo.cc}||'%')
+		</if>
+		<choose>
+			<when test="modelInfo != null and modelInfo.px == 0">
+				ORDER BY a.hotflag
+			</when>
+			<otherwise>
+				ORDER BY a.create_date
+			</otherwise>
+		</choose>
+	</select>
+	<select id="getUncheckCompanyUnionInfoNum" resultType="int">
+		SELECT
+		count(0)
+		FROM tl_company_union_info a
+		WHERE a.del_flag=0
+		AND a.flag=1
+	</select>
+</mapper>

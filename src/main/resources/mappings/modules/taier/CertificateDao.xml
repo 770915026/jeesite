@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.CertificateDao">
+
+	<sql id="certificateColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.content AS "content",
+		a.create_date AS "createDate",
+		a.del_flag AS "delFlag",
+		a.order_no AS
+		"orderNo",
+		a.img AS "img"
+	</sql>
+
+	<sql id="certificateJoins">
+	</sql>
+
+	<select id="get" resultType="Certificate">
+		SELECT
+		<include refid="certificateColumns" />
+		FROM tl_certificate a
+		<include refid="certificateJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="Certificate">
+		SELECT
+		<include refid="certificateColumns" />
+		FROM tl_certificate a
+		<include refid="certificateJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+
+			<if test="name != null and name != ''">
+				AND a.name LIKE
+				<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+		</where>
+		ORDER BY a.order_no,a.create_date DESC
+	</select>
+
+	<select id="findAllList" resultType="Certificate">
+		SELECT
+		<include refid="certificateColumns" />
+		FROM tl_certificate a
+		<include refid="certificateJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_certificate(
+		id,
+		name,
+		content,
+		create_date,
+		del_flag,
+		order_no,
+		img
+		) VALUES (
+		#{id},
+		#{name},
+		#{content},
+		#{createDate},
+		#{delFlag},
+		#{orderNo},
+		#{img}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_certificate SET
+		name = #{name},
+		content = #{content},
+		order_no = #{orderNo},
+		img = #{img}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE tl_certificate SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+</mapper>

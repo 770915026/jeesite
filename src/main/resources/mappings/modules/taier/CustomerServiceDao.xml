@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.CustomerServiceDao">
+
+	<sql id="customerServiceColumns">
+		a.id AS "id",
+		a.qq AS "qq",
+		a.name AS "name",
+		a.create_date AS
+		"createDate",
+		a.del_flag AS "delFlag"
+	</sql>
+
+	<sql id="customerServiceJoins">
+	</sql>
+
+	<select id="get" resultType="CustomerService">
+		SELECT
+		<include refid="customerServiceColumns" />
+		FROM tl_customer_service a
+		<include refid="customerServiceJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="CustomerService">
+		SELECT
+		<include refid="customerServiceColumns" />
+		FROM tl_customer_service a
+		<include refid="customerServiceJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE
+				<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="CustomerService">
+		SELECT
+		<include refid="customerServiceColumns" />
+		FROM tl_customer_service a
+		<include refid="customerServiceJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_customer_service(
+		id,
+		qq,
+		name,
+		create_date,
+		del_flag
+		) VALUES (
+		#{id},
+		#{qq},
+		#{name},
+		#{createDate},
+		#{delFlag}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_customer_service SET
+		qq = #{qq},
+		name = #{name}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE tl_customer_service SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	<select id="getCustomerServiceList" resultType="CustomerService">
+		SELECT
+		<include refid="customerServiceColumns" />
+		FROM tl_customer_service a
+	</select>
+</mapper>

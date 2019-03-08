@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.TlAppsDao">
+
+	<sql id="tlAppsColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.developer AS "developer",
+		a.visit_auth AS "visitAuth",
+		a.del_flag AS "delFlag",
+		a.company_id AS
+		"companyId",
+		a.description AS "description",
+		a.create_date AS
+		"createDate",
+		a.create_user_id AS "createUserId",
+		a.verification AS
+		"verification"
+	</sql>
+
+	<sql id="tlAppsJoins">
+	</sql>
+
+	<select id="get" resultType="TlApps">
+		SELECT
+		<include refid="tlAppsColumns" />
+		FROM tl_apps a
+		<include refid="tlAppsJoins" />
+		WHERE a.id = #{id}
+	</select>
+	<select id="getAppsByCondition" resultType="TlApps">
+		SELECT
+		<include refid="tlAppsColumns" />
+		FROM tl_apps a
+		WHERE
+		a.del_flag = #{DEL_FLAG_NORMAL} and
+		a.company_id=#{companyId}
+		<if test="name != null and name != '' ">
+			AND a.name=#{name}
+		</if>
+		<if test="developer != null and developer != '' ">
+			AND a.developer=#{developer}
+		</if>
+		<if test="visitAuth != null and visitAuth != '' ">
+			AND a.visit_auth=#{visitAuth}
+		</if>
+		<if test="description != null and description != '' ">
+			AND a.description=#{description}
+		</if>
+	</select>
+	<select id="getCommentAndMyApps" resultType="TlApps">
+		SELECT
+		<include refid="tlAppsColumns" />
+		FROM tl_apps a
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} and
+		a.company_id=#{companyId}
+	</select>
+	<select id="findList" resultType="TlApps">
+		SELECT
+		<include refid="tlAppsColumns" />
+		FROM tl_apps a
+		<include refid="tlAppsJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE
+				<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="developer != null and developer != ''">
+				AND a.developer LIKE
+				<if test="dbName == 'oracle'">'%'||#{developer}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{developer}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{developer},'%')</if>
+			</if>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="TlApps">
+		SELECT
+		<include refid="tlAppsColumns" />
+		FROM tl_apps a
+		<include refid="tlAppsJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_apps(
+		id,
+		name,
+		developer,
+		visit_auth,
+		del_flag,
+		company_id,
+		description,
+		create_date,
+		create_user_id,
+		verification
+		) VALUES (
+		#{id},
+		#{name},
+		#{developer},
+		#{visitAuth},
+		#{delFlag},
+		#{companyId},
+		#{description},
+		#{createDate},
+		#{createUserId},
+		#{verification}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_apps SET
+		name = #{name},
+		developer = #{developer},
+		visit_auth = #{visitAuth},
+		description = #{description},
+		verification = #{verification}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE tl_apps SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	<update id="deleteBycompanyId">
+		UPDATE tl_apps SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE
+		company_id = #{companyId}
+	</update>
+</mapper>

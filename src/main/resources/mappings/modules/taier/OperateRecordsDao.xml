@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.OperateRecordsDao">
+
+	<sql id="operateRecordsColumns">
+		a.id AS "id",
+		a.user_id AS "user.id",
+		a.create_date AS
+		"createDate",
+		a.menu AS "menu",
+		a.menu_name AS "menuName",
+		a.operate_type AS "operateType",
+		a.detail_id AS "detailId",
+		a.detail_title AS "detailTitle",
+		u2.name AS "user.name"
+	</sql>
+
+	<sql id="operateRecordsJoins">
+		LEFT JOIN sys_user u2 ON u2.id = a.user_id
+	</sql>
+
+	<select id="get" resultType="OperateRecords">
+		SELECT
+		<include refid="operateRecordsColumns" />
+		FROM tl_operate_records a
+		<include refid="operateRecordsJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="OperateRecords">
+		SELECT
+		<include refid="operateRecordsColumns" />
+		FROM tl_operate_records a
+		<include refid="operateRecordsJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="OperateRecords">
+		SELECT
+		<include refid="operateRecordsColumns" />
+		FROM tl_operate_records a
+		<include refid="operateRecordsJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_operate_records(
+		id,
+		user_id,
+		create_date,
+		menu,
+		menu_name,
+		operate_type,
+		detail_id,
+		detail_title
+		) VALUES (
+		#{id},
+		#{user.id},
+		#{createDate},
+		#{menu},
+		#{menuName},
+		#{operateType},
+		#{detailId},
+		#{detailTitle}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_operate_records SET
+		user_id = #{user.id},
+		menu = #{menu},
+		menu_name = #{menuName},
+		operate_type = #{operateType},
+		detail_id = #{detailId},
+		detail_title = #{detailTitle}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		DELETE FROM tl_operate_records
+		WHERE id = #{id}
+	</update>
+
+</mapper>

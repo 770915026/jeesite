@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.TlSysAgreementDao">
+
+	<sql id="tlSysAgreementColumns">
+		a.id AS "id",
+		a.service_agreement AS "serviceAgreement",
+		a.service_agreement1 AS "serviceAgreement1",
+		a.service_agreement2 AS
+		"serviceAgreement2"
+	</sql>
+
+	<sql id="tlSysAgreementJoins">
+	</sql>
+
+	<select id="get" resultType="TlSysAgreement">
+		SELECT
+		<include refid="tlSysAgreementColumns" />
+		FROM tl_sys_agreement a
+		<include refid="tlSysAgreementJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="TlSysAgreement">
+		SELECT
+		<include refid="tlSysAgreementColumns" />
+		FROM tl_sys_agreement a
+		<include refid="tlSysAgreementJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="TlSysAgreement">
+		SELECT
+		<include refid="tlSysAgreementColumns" />
+		FROM tl_sys_agreement a
+		<include refid="tlSysAgreementJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_sys_agreement(
+		id,
+		service_agreement,
+		service_agreement1,
+		service_agreement2
+		) VALUES (
+		#{id},
+		#{serviceAgreement},
+		#{serviceAgreement1},
+		#{serviceAgreement2}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_sys_agreement SET
+		service_agreement = #{serviceAgreement},
+		service_agreement1 = #{serviceAgreement1},
+		service_agreement2 = #{serviceAgreement2}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		DELETE FROM tl_sys_agreement
+		WHERE id = #{id}
+	</update>
+
+</mapper>

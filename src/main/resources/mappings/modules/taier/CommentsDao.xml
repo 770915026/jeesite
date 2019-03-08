@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.CommentsDao">
+
+	<sql id="commentsColumns">
+		a.id AS "id",
+		a.activity_id AS "activityId",
+		a.user_id AS
+		"user.id",
+		a.create_date AS "createDate",
+		a.content AS "content",
+		a.del_flag AS "delFlag",
+		a.to_user_id AS "toUserId",
+		a.parentid AS
+		"parentid",
+		u3.name AS "user.name"
+	</sql>
+
+	<sql id="commentsJoins">
+		LEFT JOIN sys_user u3 ON u3.id = a.user_id
+	</sql>
+
+	<select id="get" resultType="Comments">
+		SELECT
+		<include refid="commentsColumns" />
+		FROM tl_comments a
+		<include refid="commentsJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="Comments">
+		SELECT
+		<include refid="commentsColumns" />
+		FROM tl_comments a
+		<include refid="commentsJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="Comments">
+		SELECT
+		<include refid="commentsColumns" />
+		FROM tl_comments a
+		<include refid="commentsJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_comments(
+		id,
+		activity_id,
+		user_id,
+		create_date,
+		content,
+		del_flag,
+		parentid,
+		to_user_id
+		) VALUES (
+		#{id},
+		#{activityId},
+		#{user.id},
+		#{createDate},
+		#{content},
+		#{delFlag},
+		#{parentid},
+		#{toUserId}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_comments SET
+		activity_id = #{activity_id},
+		user_id = #{user.id},
+		content = #{content},
+		to_user_id = #{toUserId}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE tl_comments SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	<!-- <select id="getActCommentsList" resultMap="commentsResultMap"> SELECT 
+		a.id AS "id", a.activity_id AS "activityId", a.user_id AS "userId", a.create_date 
+		AS "createDate", a.content AS "content", a.del_flag AS "delFlag", (select 
+		name from sys_user where id=a.user_id) AS "name", b.id AS "id1", b.activity_id 
+		AS "activityId1", b.user_id AS "userId1", b.create_date AS "createDate1", 
+		b.content AS "content1", b.del_flag AS "delFlag1", (select name from sys_user 
+		where id=b.user_id) AS "name1" FROM tl_comments a left join tl_comments b 
+		on a.id=b.parentid WHERE a.del_flag = '0' AND a.activity_id=#{activityId} 
+		AND a.parentid='0' ORDER BY a.create_date </select> <resultMap id="commentsResultMap" 
+		type="com.thinkgem.jeesite.modules.taier.entity.Comments"> <id column="id" 
+		property="id" jdbcType="VARCHAR"/> <result column="activityId" property="activityId"/> 
+		<result column="createDate" property="createDate"/> <result column="content" 
+		property="content"/> <result column="name" property="user.name"/> <result 
+		column="userId" property="user.id"/> <collection property="childrenCommentsList" 
+		ofType="com.thinkgem.jeesite.modules.taier.entity.Comments"> <id column="id1" 
+		property="id" jdbcType="VARCHAR"/> <result column="activityId1" property="activityId"/> 
+		<result column="createDate1" property="createDate"/> <result column="content1" 
+		property="content"/> <result column="name1" property="user.name"/> <result 
+		column="userId1" property="user.id"/> </collection> </resultMap> -->
+	<select id="getActCommentsList" resultMap="commentsResultMap">
+		SELECT
+		a.id AS "id",
+		a.activity_id AS "activityId",
+		a.user_id AS "userId",
+		a.create_date AS "createDate",
+		a.content AS "content",
+		a.del_flag AS "delFlag",
+		(select name from sys_user where id=a.user_id) AS "name"
+		FROM tl_comments a
+		WHERE a.del_flag = '0'
+		AND a.activity_id=#{activityId}
+		AND a.parentid='0'
+		ORDER BY a.create_date
+	</select>
+	<resultMap id="commentsResultMap"
+		type="com.thinkgem.jeesite.modules.taier.entity.Comments">
+		<id column="id" property="id" />
+		<result column="activityId" property="activityId" />
+		<result column="createDate" property="createDate" />
+		<result column="content" property="content" />
+		<result column="name" property="user.name" />
+		<result column="userId" property="user.id" />
+		<collection property="childrenCommentsList" select="getChiledrenComments"
+			column="id">
+
+		</collection>
+	</resultMap>
+	<select id="getChiledrenComments" resultMap="commentsResultMap">
+		SELECT
+		a.id AS "id",
+		a.activity_id AS "activityId",
+		a.user_id AS "userId",
+		a.create_date AS "createDate",
+		a.content AS "content",
+		a.del_flag AS "delFlag",
+		(select name from sys_user where id=a.user_id) AS "name"
+		FROM tl_comments a
+		where a.del_flag = '0'
+		AND parentid=#{parentid}
+	</select>
+</mapper>

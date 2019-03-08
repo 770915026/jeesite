@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.TlLinkDao">
+
+	<sql id="tlLinkColumns">
+		a.id AS "id",
+		a.title AS "title",
+		a.link_url AS "linkUrl",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.del_flag
+		AS "delFlag",
+		a.sort_num AS "sortNum"
+	</sql>
+
+	<sql id="tlLinkJoins">
+	</sql>
+
+	<select id="get" resultType="TlLink">
+		SELECT
+		<include refid="tlLinkColumns" />
+		FROM tl_link a
+		<include refid="tlLinkJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="TlLink">
+		SELECT
+		<include refid="tlLinkColumns" />
+		FROM tl_link a
+		<include refid="tlLinkJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="title != null and title != ''">
+				AND a.title LIKE
+				<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+		</where>
+		order by a.sort_num
+
+	</select>
+
+	<select id="findAllList" resultType="TlLink">
+		SELECT
+		<include refid="tlLinkColumns" />
+		FROM tl_link a
+		<include refid="tlLinkJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_link(
+		id,
+		title,
+		link_url,
+		create_by,
+		create_date,
+		del_flag,
+		sort_num
+		) VALUES (
+		#{id},
+		#{title},
+		#{linkUrl},
+		#{createBy.id},
+		#{createDate},
+		#{delFlag},
+		#{sortNum}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_link SET
+		title = #{title},
+		link_url = #{linkUrl},
+		sort_num = #{sortNum}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE tl_link SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+</mapper>

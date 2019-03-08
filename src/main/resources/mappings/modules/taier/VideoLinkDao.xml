@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.VideoLinkDao">
+
+	<sql id="videoLinkColumns">
+		a.id AS "id",
+		a.title AS "title",
+		a.link_url AS "linkUrl",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.del_flag
+		AS "delFlag",
+		a.sort_num AS "sortNum",
+		a.face_img AS "faceImg"
+	</sql>
+
+	<sql id="videoLinkJoins">
+	</sql>
+
+	<select id="get" resultType="VideoLink">
+		SELECT
+		<include refid="videoLinkColumns" />
+		FROM tl_video_link a
+		<include refid="videoLinkJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="VideoLink">
+		SELECT
+		<include refid="videoLinkColumns" />
+		FROM tl_video_link a
+		<include refid="videoLinkJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="title != null and title != ''">
+				AND a.title LIKE
+				<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+		order by a.sort_num
+	</select>
+
+	<select id="findAllList" resultType="VideoLink">
+		SELECT
+		<include refid="videoLinkColumns" />
+		FROM tl_video_link a
+		<include refid="videoLinkJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_video_link(
+		id,
+		title,
+		link_url,
+		create_by,
+		create_date,
+		del_flag,
+		sort_num,
+		face_img
+		) VALUES (
+		#{id},
+		#{title},
+		#{linkUrl},
+		#{createBy.id},
+		#{createDate},
+		#{delFlag},
+		#{sortNum},
+		#{faceImg}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_video_link SET
+		title = #{title},
+		link_url = #{linkUrl},
+		sort_num = #{sortNum},
+		face_img = #{faceImg}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE tl_video_link SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+</mapper>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.TmcBgqrbDao">
+
+	<sql id="tmcBgqrbColumns">
+		a.bgjl AS "bgjl",
+		a.gdh AS "gdh",
+		a.reader AS "reader",
+		a.writer AS "writer",
+		a.pk1 AS "pk1",
+		a.bm AS "bm",
+		a.sqdw AS "sqdw",
+		a.sqxh AS "sqxh",
+		a.sqbh AS "sqbh",
+		a.yccczsh AS "yccczsh",
+		a.ycccbgh AS
+		"ycccbgh",
+		a.ycccsqh AS "ycccsqh",
+		a.bz AS "bz"
+	</sql>
+
+	<sql id="tmcBgqrbJoins">
+	</sql>
+
+	<select id="get" resultType="TmcBgqrb">
+		SELECT
+		<include refid="tmcBgqrbColumns" />
+		FROM tmc_bgqrb a
+		<include refid="tmcBgqrbJoins" />
+		WHERE a.id = #{id}
+	</select>
+	<select id="getTmcRwsqdByPk1" resultType="TmcBgqrb">
+		SELECT
+		<include refid="tmcBgqrbColumns" />
+		FROM tmc_bgqrb a
+		<include refid="tmcBgqrbJoins" />
+		WHERE a.pk1 = #{pk1}
+	</select>
+	<select id="findList" resultType="TmcBgqrb">
+		SELECT
+		<include refid="tmcBgqrbColumns" />
+		FROM tmc_bgqrb a
+		<include refid="tmcBgqrbJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="TmcBgqrb">
+		SELECT
+		<include refid="tmcBgqrbColumns" />
+		FROM tmc_bgqrb a
+		<include refid="tmcBgqrbJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tmc_bgqrb(
+		bgjl,
+		gdh,
+		reader,
+		writer,
+		pk1,
+		bm,
+		sqdw,
+		sqxh,
+		sqbh,
+		yccczsh,
+		ycccbgh,
+		ycccsqh,
+		bz
+		) VALUES (
+		#{bgjl},
+		#{gdh},
+		#{reader},
+		#{writer},
+		#{pk1},
+		#{bm},
+		#{sqdw},
+		#{sqxh},
+		#{sqbh},
+		#{yccczsh},
+		#{ycccbgh},
+		#{ycccsqh},
+		#{bz}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tmc_bgqrb SET
+		bgjl = #{bgjl},
+		reader = #{reader},
+		writer = #{writer},
+		bm = #{bm},
+		sqdw = #{sqdw},
+		sqxh = #{sqxh},
+		sqbh = #{sqbh},
+		yccczsh = #{yccczsh},
+		ycccbgh = #{ycccbgh},
+		ycccsqh = #{ycccsqh},
+		bz = #{bz}
+		WHERE pk1 = #{pk1}
+	</update>
+
+	<update id="delete">
+		DELETE FROM tmc_bgqrb
+		WHERE id = #{id}
+	</update>
+	<select id="deleteByGdh">
+		DELETE FROM tmc_bgqrb
+		WHERE gdh = #{gdh}
+	</select>
+
+</mapper>

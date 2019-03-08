@@ -1,0 +1,23 @@
+/*初始化*/
+@import url("../css/reset.css");
+/*头尾*/
+@import url("../css/header-footer.css");
+
+html {
+	width: 100%;
+	overflow-x:hidden;
+}
+body{
+	background:#fff;
+}
+.container{
+    width: 100%;
+}
+.taier-container{
+	width:1149px;
+	margin:0 auto;
+}
+.taier-container-outer{
+	width: 1190px;
+	margin:0 auto;
+}

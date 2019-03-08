@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.TlInvoiceDao">
+
+	<sql id="tlInvoiceColumns">
+		a.id AS "id",
+		a.company_id AS "company.id",
+		b.name AS
+		"company.name",
+		a.type AS "type",
+		a.invoice_name AS "invoiceName",
+		a.tax_number AS "taxNumber",
+		a.receive_type AS "receiveType",
+		a.receive_address AS "receiveAddress",
+		a.receive_phone AS
+		"receivePhone",
+		a.receive_email AS "receiveEmail",
+		a.create_date AS
+		"createDate",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.type2 AS "type2",
+		a.flag AS "flag"
+	</sql>
+
+	<sql id="tlInvoiceJoins">
+		LEFT JOIN tl_company_info b on a.company_id = b.id
+	</sql>
+
+	<select id="get" resultType="TlInvoice">
+		SELECT
+		<include refid="tlInvoiceColumns" />
+		FROM tl_invoice a
+		<include refid="tlInvoiceJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="TlInvoice">
+		SELECT
+		<include refid="tlInvoiceColumns" />
+		FROM tl_invoice a
+		<include refid="tlInvoiceJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="company != null and company.name != null and company.name != ''">
+				and b.name like
+				<if test="dbName == 'oracle'">'%'||#{company.name}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{company.name}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{company.name},'%')</if>
+			</if>
+			<if test="flag != null and flag != ''">
+				and a.flag = #{flag}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="TlInvoice">
+		SELECT
+		<include refid="tlInvoiceColumns" />
+		FROM tl_invoice a
+		<include refid="tlInvoiceJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_invoice(
+		id,
+		company_id,
+		type,
+		invoice_name,
+		tax_number,
+		receive_type,
+		receive_address,
+		receive_phone,
+		receive_email,
+		create_date,
+		update_date,
+		del_flag,
+		type2,
+		flag
+		) VALUES (
+		#{id},
+		#{company.id},
+		#{type},
+		#{invoiceName},
+		#{taxNumber},
+		#{receiveType},
+		#{receiveAddress},
+		#{receivePhone},
+		#{receiveEmail},
+		#{createDate},
+		#{updateDate},
+		#{delFlag},
+		#{type2},
+		#{flag}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_invoice SET
+		company_id = #{company.id},
+		type = #{type},
+		invoice_name = #{invoiceName},
+		tax_number = #{taxNumber},
+		receive_type = #{receiveType},
+		receive_address = #{receiveAddress},
+		receive_phone = #{receivePhone},
+		receive_email = #{receiveEmail},
+		update_date = #{updateDate},
+		type2 = #{type2},
+		flag = #{flag}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE tl_invoice SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+</mapper>

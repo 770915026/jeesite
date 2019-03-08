@@ -1,0 +1,288 @@
+.taier-news-banners {
+	height: 456px;
+	background: url(../images/news/taierNewBg.jpg) top center no-repeat;
+	position: relative;
+}
+
+.taier-news-banners .banner-text {
+	position: absolute;
+	top: 168px;
+	text-align: left;
+}
+
+.taier-news-banners .banner-text strong {
+	display: block;
+	font-size: 60px;
+	color: #fff;
+	font-weight: normal;
+}
+
+.taier-news-banners .banner-text em {
+	display: block;
+	font-size: 27px;
+	color: #fff;
+	margin-top: 10px;
+}
+
+.taier-news-wrap {
+	height: auto;
+	background: #fff;
+	overflow: hidden;
+	padding-bottom: 60px;
+}
+
+.taier-news-wrap .taier-news-outer {
+	
+}
+
+.taier-news-wrap .taier-news-outer .taier-news-nav {
+	display: inline-block;
+	float: left;
+	width: 175px;
+	height: 830px;
+	text-align: center;
+	border-right: 1px solid #e5e5e5;
+	padding-top: 30px;
+}
+
+.taier-news-wrap .taier-news-outer .taier-news-nav dd {
+	display: inline-block;
+	width: 175px;
+	float: left;
+	height: 50px;
+	line-height: 50px;
+	position: relative;
+	margin-top: 50px;
+	cursor: pointer;
+}
+
+.taier-news-wrap .taier-news-outer .taier-news-nav dd .tit {
+	font-size: 18px;
+	color: #333;
+	text-align: center;
+}
+
+.taier-news-wrap .taier-news-outer .taier-news-nav dd .ico {
+	display: inline-block;
+	position: absolute;
+	right: -8px;
+	top: 50%;
+	margin-top: -7px;
+	width: 14px;
+	height: 14px;
+	border-radius: 25px;
+	background: #b7bdc3;
+}
+
+.taier-news-wrap .taier-news-outer .taier-news-nav dd.current .tit {
+	color: #4285ff;
+}
+
+.taier-news-wrap .taier-news-outer .taier-news-nav dd.current .ico {
+	width: 34px;
+	height: 26px;
+	right: -15px;
+	margin-top: -13px;
+	background: url(../images/news/ico01.png) no-repeat;
+}
+/*右侧新闻*/
+.taier-news-tab {
+	float: right;
+	width: 835px;
+	padding-top: 60px;
+}
+
+.taier-news-tab .tab-news-list {
+	display: none;
+}
+
+.taier-news-tab .tab-news-list.current {
+	display: block;
+}
+
+.taier-news-tab .taier-tit {
+	font-size: 40px;
+	color: #333;
+	text-align: left;
+	border-bottom: 1px solid #e9e9e9;
+	padding: 22px 0;
+	font-weight: normal;
+}
+
+.taier-news-tab .news-box {
+	
+}
+
+.taier-news-tab .news-box dd {
+	display: inline-block;
+	float: left;
+	border-bottom: 1px dotted #e5e5e5;
+	margin-top: 30px;
+	width: 100%;
+	padding-bottom: 10px;
+}
+
+.taier-news-tab .news-box dd .news-img {
+	display: inline-block;
+	float: left;
+	width: 162px;
+	height: 89px;
+	margin-right: 20px;
+}
+
+.taier-news-tab .news-box dd .news-img img {
+	width: 162px;
+	height: 89px;
+}
+
+.taier-news-tab .news-box dd .news-text {
+	width: 650px;
+	float: left;
+}
+
+.taier-news-tab .news-box dd .news-text .tit {
+	font-size: 18px;
+	color: #333;
+	text-align: left;
+	display: block;
+}
+
+.taier-news-tab .news-box dd .news-text .text {
+	display: inline-block;
+	font-size: 14px;
+	color: #777;
+	text-align: left;
+	margin-top: 10px;
+	line-height: 25px;
+}
+
+.taier-news-tab .news-box dd .date {
+	display: block;
+	float: right;
+	margin-top: 10px;
+	font-size: 12px;
+	color: #777;
+}
+
+.taier-news-tab .news-box dd:nth-last-of-type(1) {
+	border-bottom: 0;
+}
+
+.taier-news-tab .page-main {
+	width: 260px;
+	margin: 25px auto 0;
+	position: relative;
+}
+
+.taier-news-tab .page-main .leftArrow {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 32px;
+	height: 32px;
+	cursor: pointer;
+	background: url(../images/news/ico05.jpg) left center no-repeat;
+}
+
+.taier-news-tab .page-main .rightArrow {
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 32px;
+	height: 32px;
+	cursor: pointer;
+	background: url(../images/news/ico06.jpg) left center no-repeat;
+}
+
+.taier-news-tab .page-main .page-box {
+	width: 190px;
+	margin: 0 auto;
+}
+
+.taier-news-tab .page-main .page-box span {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	line-height: 32px;
+	font-size: 14px;
+	color: #333;
+	text-align: center;
+	margin: 0 0 0 10px;
+	cursor: pointer;
+}
+
+.taier-news-tab .page-main .page-box span.current {
+	color: red;
+	font-weight: bold;
+}
+
+/*行业数据分析报告*/
+.taier-news-banner {
+	height: 456px;
+	background: url(../images/news/taierNewBg02.jpg) top center no-repeat;
+	position: relative;
+}
+
+.taier-news-banner .banner-text {
+	position: absolute;
+	top: 168px;
+	text-align: left;
+}
+
+.taier-news-banner .banner-text strong {
+	display: block;
+	font-size: 60px;
+	color: #fff;
+	font-weight: normal;
+}
+
+.taier-news-banner .banner-text em {
+	display: block;
+	font-size: 27px;
+	color: #fff;
+	margin-top: 10px;
+}
+
+.taier-data-list {
+	
+}
+
+.taier-data-list dd {
+	display: inline-block;
+	float: left;
+	width: 100%;
+	border-bottom: 1px solid #e9e9e9;
+	padding: 25px 0;
+}
+
+.taier-data-list dd a {
+	font-size: 12px;
+	color: #333;
+}
+
+.taier-data-list dd .intro-box {
+	float: left;
+	width: 648px;
+	overflow: hidden;
+}
+
+.taier-data-list dd .intro-box strong {
+	font-size: 18px;
+	color: #333;
+	padding-left: 15px;
+	font-weight: normal;
+	background: url(../images/taier-ico10.jpg) left center no-repeat;
+}
+
+.taier-data-list dd .intro-box p {
+	font-size: 14px;
+	color: #777;
+	margin-top: 10px;
+}
+
+.taier-data-list dd .data-box {
+	float: right;
+	font-size: 12px;
+	color: #333;
+	padding: 17px 0 0 0;
+}

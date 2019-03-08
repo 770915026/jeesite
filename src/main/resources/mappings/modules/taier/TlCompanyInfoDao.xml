@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.TlCompanyInfoDao">
+
+	<sql id="tlCompanyInfoColumns">
+		a.id AS "id",
+		a.create_date AS "createDate",
+		a.update_date AS
+		"updateDate",
+		a.name AS "name",
+		a.name_en AS "nameEn",
+		a.address AS
+		"address",
+		a.phone AS "phone",
+		a.email AS "email",
+		a.del_flag AS
+		"delFlag",
+		a.linkman_name AS "linkmanName",
+		a.user_id AS "user.id",
+		a.zipcode AS "zipCode",
+		a.factory_name AS "factoryName",
+
+		u11.name AS "user.name"
+	</sql>
+
+	<sql id="tlCompanyInfoJoins">
+		LEFT JOIN sys_user u11 ON u11.id = a.user_id
+
+	</sql>
+
+	<select id="get" resultType="TlCompanyInfo">
+		SELECT
+		<include refid="tlCompanyInfoColumns" />
+		FROM tl_company_info a
+		<include refid="tlCompanyInfoJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findByUserId" resultType="TlCompanyInfo">
+		SELECT
+		<include refid="tlCompanyInfoColumns" />
+		FROM tl_company_info a
+		<include refid="tlCompanyInfoJoins" />
+		WHERE a.user_id = #{userId}
+	</select>
+
+	<select id="findList" resultType="TlCompanyInfo">
+		SELECT
+		<include refid="tlCompanyInfoColumns" />
+		FROM tl_company_info a
+		<include refid="tlCompanyInfoJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if
+				test="tlFactory != null and tlFactory.id != null and tlFactory.id != ''">
+				and a.factory_id = #{tlFactory.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="TlCompanyInfo">
+		SELECT
+		<include refid="tlCompanyInfoColumns" />
+		FROM tl_company_info a
+		<include refid="tlCompanyInfoJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_company_info(
+		id,
+		create_date,
+		update_date,
+		name,
+		name_en,
+		address,
+		phone,
+		email,
+		del_flag,
+		linkman_name,
+		user_id,
+		zipcode,
+		factory_name
+		) VALUES (
+		#{id},
+		#{createDate},
+		#{updateDate},
+		#{name},
+		#{nameEn},
+		#{address},
+		#{phone},
+		#{email},
+		#{delFlag},
+		#{linkmanName},
+		#{user.id},
+		#{zipCode},
+		#{factoryName}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_company_info SET
+		update_date = #{updateDate},
+		name = #{name},
+		name_en = #{nameEn},
+		address = #{address},
+		phone = #{phone},
+		email = #{email},
+		linkman_name = #{linkmanName},
+		user_id = #{user.id},
+		zipcode = #{zipCode},
+		factory_name = #{factoryName}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE tl_company_info SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+</mapper>

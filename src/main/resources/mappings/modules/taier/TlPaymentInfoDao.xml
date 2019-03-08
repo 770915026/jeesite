@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.TlPaymentInfoDao">
+
+	<sql id="tlPaymentInfoColumns">
+		a.id AS "id",
+		a.amount AS "amount",
+		a.aliurl AS "aliurl",
+		a.weixinurl AS "weixinurl",
+		a.baiduurl AS "baiduurl",
+		a.bank AS "bank",
+		a.banknum AS "banknum",
+		a.dutynum AS "dutynum",
+		a.remark AS "remark"
+	</sql>
+
+	<sql id="tlPaymentInfoJoins">
+	</sql>
+
+	<select id="get" resultType="TlPaymentInfo">
+		SELECT
+		<include refid="tlPaymentInfoColumns" />
+		FROM tl_payment_info a
+		<include refid="tlPaymentInfoJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="TlPaymentInfo">
+		SELECT
+		<include refid="tlPaymentInfoColumns" />
+		FROM tl_payment_info a
+		<include refid="tlPaymentInfoJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="TlPaymentInfo">
+		SELECT
+		<include refid="tlPaymentInfoColumns" />
+		FROM tl_payment_info a
+		<include refid="tlPaymentInfoJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_payment_info(
+		id,
+		amount,
+		aliurl,
+		weixinurl,
+		baiduurl,
+		bank,
+		banknum,
+		dutynum,
+		remark
+		) VALUES (
+		#{id},
+		#{amount},
+		#{aliurl},
+		#{weixinurl},
+		#{baiduurl},
+		#{bank},
+		#{banknum},
+		#{dutynum},
+		#{remark}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_payment_info SET
+		amount = #{amount},
+		aliurl = #{aliurl},
+		weixinurl = #{weixinurl},
+		baiduurl = #{baiduurl},
+		bank = #{bank},
+		banknum = #{banknum},
+		dutynum = #{dutynum},
+		remark = #{remark}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		DELETE FROM tl_payment_info
+		WHERE id = #{id}
+	</update>
+
+</mapper>

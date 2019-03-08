@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.TmcXxxxDao">
+
+	<sql id="tmcXxxxColumns">
+		a.dk AS "dk",
+		a.ej AS "ej",
+		a.syj AS "syj",
+		a.ly AS "ly",
+		a.gps AS "gps",
+		a.gprs AS "gprs",
+		a.gprsclass AS "gprsclass",
+		a.egprs AS
+		"egprs",
+		a.egprsclass AS "egprsclass",
+		a.wapi AS "wapi",
+		a.cmmb AS
+		"cmmb",
+		a.bz AS "bz",
+		a.bh AS "bh",
+		a.reader AS "reader",
+		a.writer AS
+		"writer",
+		a.pk1 AS "pk1"
+	</sql>
+
+	<sql id="tmcXxxxJoins">
+	</sql>
+
+	<select id="get" resultType="TmcXxxx">
+		SELECT
+		<include refid="tmcXxxxColumns" />
+		FROM tmc_xxxx a
+		<include refid="tmcXxxxJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="TmcXxxx">
+		SELECT
+		<include refid="tmcXxxxColumns" />
+		FROM tmc_xxxx a
+		<include refid="tmcXxxxJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="TmcXxxx">
+		SELECT
+		<include refid="tmcXxxxColumns" />
+		FROM tmc_xxxx a
+		<include refid="tmcXxxxJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tmc_xxxx(
+		dk,
+		ej,
+		syj,
+		ly,
+		gps,
+		gprs,
+		gprsclass,
+		egprs,
+		egprsclass,
+		wapi,
+		cmmb,
+		bz,
+		bh,
+		reader,
+		writer,
+		pk1
+		) VALUES (
+		#{dk},
+		#{ej},
+		#{syj},
+		#{ly},
+		#{gps},
+		#{gprs},
+		#{gprsclass},
+		#{egprs},
+		#{egprsclass},
+		#{wapi},
+		#{cmmb},
+		#{bz},
+		#{bh},
+		#{reader},
+		#{writer},
+		#{pk1}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tmc_xxxx SET
+		dk = #{dk},
+		ej = #{ej},
+		syj = #{syj},
+		ly = #{ly},
+		gps = #{gps},
+		gprs = #{gprs},
+		gprsclass = #{gprsclass},
+		egprs = #{egprs},
+		egprsclass = #{egprsclass},
+		wapi = #{wapi},
+		cmmb = #{cmmb},
+		bz = #{bz},
+		reader = #{reader},
+		writer = #{writer}
+		WHERE pk1 = #{pk1}
+	</update>
+
+	<update id="delete">
+		DELETE FROM tmc_xxxx
+		WHERE id = #{id}
+	</update>
+	<select id="getTmcXxxxBypk1" resultType="TmcXxxx">
+		SELECT
+		<include refid="tmcXxxxColumns" />
+		FROM tmc_xxxx a
+		WHERE a.bh = #{pk1}
+	</select>
+	<delete id="deleteByBh">
+		DELETE FROM tmc_xxxx
+		WHERE bh=#{bh}
+	</delete>
+</mapper>

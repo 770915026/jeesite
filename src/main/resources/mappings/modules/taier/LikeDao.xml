@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.LikeDao">
+
+	<sql id="likeColumns">
+		a.id AS "id",
+		a.activity_id AS "activityId",
+		a.user_id AS
+		"user.id",
+		a.create_date AS "createDate",
+		u3.name AS "user.name"
+	</sql>
+
+	<sql id="likeJoins">
+		LEFT JOIN sys_user u3 ON u3.id = a.user_id
+	</sql>
+
+	<select id="get" resultType="Like">
+		SELECT
+		<include refid="likeColumns" />
+		FROM tl_like a
+		<include refid="likeJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="Like">
+		SELECT
+		<include refid="likeColumns" />
+		FROM tl_like a
+		<include refid="likeJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findByUserAndActivity" resultType="Like">
+		SELECT
+		<include refid="likeColumns" />
+		FROM tl_like a
+		<include refid="likeJoins" />
+		where
+		a.activity_id = #{activityId} and a.user_id = #{user.id}
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="Like">
+		SELECT
+		<include refid="likeColumns" />
+		FROM tl_like a
+		<include refid="likeJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_like(
+		id,
+		activity_id,
+		user_id,
+		create_date
+		) VALUES (
+		#{id},
+		#{activityId},
+		#{user.id},
+		#{createDate}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_like SET
+		activity_id = #{activityId},
+		user_id = #{user.id}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		DELETE FROM tl_like
+		WHERE id = #{id}
+	</update>
+	<select id="getNumOfLikeThisAct" resultType="int">
+		select count(0)
+		from tl_like a
+		where a.activity_id=#{activityId}
+		and a.user_id =#{user.id}
+	</select>
+</mapper>

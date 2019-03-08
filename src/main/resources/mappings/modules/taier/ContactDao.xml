@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.ContactDao">
+
+	<sql id="contactColumns">
+		a.id AS "id",
+		a.address AS "address",
+		a.phone AS "phone",
+		a.create_date AS "createDate"
+	</sql>
+
+	<sql id="contactJoins">
+	</sql>
+
+	<select id="get" resultType="Contact">
+		SELECT
+		<include refid="contactColumns" />
+		FROM tl_contact a
+		<include refid="contactJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="Contact">
+		SELECT
+		<include refid="contactColumns" />
+		FROM tl_contact a
+		<include refid="contactJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="Contact">
+		SELECT
+		<include refid="contactColumns" />
+		FROM tl_contact a
+		<include refid="contactJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_contact(
+		id,
+		address,
+		phone,
+		create_date
+		) VALUES (
+		#{id},
+		#{address},
+		#{phone},
+		#{createDate}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_contact SET
+		address = #{address},
+		phone = #{phone}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		DELETE FROM tl_contact
+		WHERE id = #{id}
+	</update>
+	<select id="getLastContact" resultType="Contact">
+		select * from(
+		SELECT
+		<include refid="contactColumns" />
+		FROM tl_contact a
+		order by a.create_date desc)
+		where rownum=1
+	</select>
+</mapper>

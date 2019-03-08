@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.AnalysisReportDao">
+
+	<sql id="analysisReportColumns">
+		a.id AS "id",
+		a.title AS "title",
+		a.cover AS "cover",
+		a.content AS "content",
+		a.three_level_content AS "threeLevelContent",
+		a.source AS "source",
+		a.create_by AS "createBy.id",
+		a.create_date AS
+		"createDate",
+		a.del_flag AS "delFlag",
+		a.author AS "author",
+		a.is_to_first_page AS "isToFirstPage",
+		a.editor AS "editor",
+		a.order_no AS "orderNo",
+		a.pdfurl as "pdfurl",
+		a.reportnum
+		as "reportnum",
+		a.ischarge as "isCharge"
+	</sql>
+
+	<sql id="analysisReportJoins">
+	</sql>
+
+	<select id="get" resultType="AnalysisReport">
+		SELECT
+		<include refid="analysisReportColumns" />
+		FROM tl_analysis_report a
+		<include refid="analysisReportJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="AnalysisReport">
+		SELECT
+		<include refid="analysisReportColumns" />
+		FROM tl_analysis_report a
+		<include refid="analysisReportJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="title != null and title != ''">
+				AND a.title LIKE
+				<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+			<if test="author != null and author != ''">
+				AND a.author LIKE
+				<if test="dbName == 'oracle'">'%'||#{author}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{author}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{author},'%')</if>
+			</if>
+			<if test="beginCreateDate != null and beginCreateDate != ''">
+				AND a.create_date <![CDATA[ >= #{beginCreateDate} ]]>
+			</if>
+			<if test="endCreateDate != null and endCreateDate != ''">
+				AND a.create_date <![CDATA[ <= #{endCreateDate} ]]>
+			</if>
+		</where>
+		ORDER BY a.order_no,a.create_date DESC
+	</select>
+
+	<select id="findAllList" resultType="AnalysisReport">
+		SELECT
+		<include refid="analysisReportColumns" />
+		FROM tl_analysis_report a
+		<include refid="analysisReportJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		ORDER BY a.order_no,a.create_date DESC
+	</select>
+	<select id="getReportNum" resultType="String">
+		select
+		seq_reportnum.nextval from dual
+	</select>
+	<insert id="insert">
+		INSERT INTO tl_analysis_report(
+		id,
+		title,
+		cover,
+		content,
+		three_level_content,
+		source,
+		create_by,
+		create_date,
+		del_flag,
+		author,
+		is_to_first_page,
+		editor,
+		order_no,
+		pdfurl,
+		ischarge,
+		reportnum
+		) VALUES (
+		#{id},
+		#{title},
+		#{cover},
+		#{content},
+		#{threeLevelContent},
+		#{source},
+		#{createBy.id},
+		#{createDate},
+		#{delFlag},
+		#{author},
+		#{isToFirstPage},
+		#{editor},
+		#{orderNo},
+		#{pdfurl},
+		#{isCharge},
+		#{reportnum}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_analysis_report SET
+		title = #{title},
+		cover = #{cover},
+		content = #{content},
+		three_level_content=#{threeLevelContent},
+		source = #{source},
+		author = #{author},
+		is_to_first_page=#{isToFirstPage},
+		editor = #{editor},
+		order_no = #{orderNo},
+		pdfurl = #{pdfurl},
+		ischarge = #{isCharge}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE tl_analysis_report SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	<update id="batchDel">
+		UPDATE tl_news SET
+		del_flag = 1
+		WHERE id IN
+		<foreach collection="array" item="id" index="no" open="("
+			separator="," close=")">
+			#{id}
+		</foreach>
+
+	</update>
+	<select id="getFirstPageAnalysisReport" resultType="AnalysisReport">
+		select *
+		from(
+		select t.*,rownum rn from(
+		SELECT
+		a.id AS "id",
+		a.title AS "title"
+		FROM tl_analysis_report a
+		where
+		a.del_flag = '0'
+		AND a.is_to_first_page='1'
+		ORDER BY a.order_no,a.create_date DESC
+		) t
+		)where rn &lt; 7
+	</select>
+</mapper>

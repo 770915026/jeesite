@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.NewsDao">
+
+	<sql id="newsColumns">
+		a.id AS "id",
+		a.title AS "title",
+		a.key_word AS "keyWord",
+		a.content AS "content",
+		a.type AS "type",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.is_hot AS "isHot",
+		a.del_flag AS
+		"delFlag",
+		a.author AS "author",
+		a.is_to_first_page AS "isToFirstPage",
+		a.original_link AS "originalLink",
+		a.order_no AS "orderNo",
+		a.is_roll AS
+		"isRoll"
+	</sql>
+
+	<sql id="newsJoins">
+	</sql>
+
+	<select id="get" resultType="News">
+		SELECT
+		<include refid="newsColumns" />
+		FROM tl_news a
+		<include refid="newsJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="News">
+		SELECT
+		<include refid="newsColumns" />
+		FROM tl_news a
+		<include refid="newsJoins" />
+		<where>
+			a.del_flag != 1
+			<if test="title != null and title != ''">
+				AND a.title LIKE
+				<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+		</where>
+		ORDER BY a.order_no,a.create_date DESC
+	</select>
+	<select id="findNewsTrashPage" resultType="News">
+		SELECT
+		<include refid="newsColumns" />
+		FROM tl_news a
+		<include refid="newsJoins" />
+		<where>
+			a.del_flag = 1
+			<if test="title != null and title != ''">
+				AND a.title LIKE
+				<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+		</where>
+		ORDER BY a.order_no,a.create_date DESC
+	</select>
+	<select id="findAllList" resultType="News">
+		SELECT
+		<include refid="newsColumns" />
+		FROM tl_news a
+		<include refid="newsJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		ORDER BY a.order_no,a.create_date DESC
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_news(
+		id,
+		title,
+		key_word,
+		content,
+		type,
+		create_by,
+		create_date,
+		is_hot,
+		author,
+		is_to_first_page,
+		original_link,
+		order_no,
+		is_roll
+		) VALUES (
+		#{id},
+		#{title},
+		#{keyWord},
+		#{content},
+		#{type},
+		#{createBy.id},
+		#{createDate},
+		#{isHot},
+		#{author},
+		#{isToFirstPage},
+		#{originalLink},
+		#{orderNo},
+		#{isRoll}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_news SET
+		title = #{title},
+		key_word=#{keyWord},
+		content = #{content},
+		type = #{type},
+		is_hot = #{isHot},
+		author = #{author},
+		is_to_first_page=#{isToFirstPage},
+		original_link = #{originalLink},
+		order_no = #{orderNo},
+		is_roll=#{isRoll}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE tl_news SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	<update id="batchDel">
+		UPDATE tl_news SET
+		del_flag = 1
+		WHERE id IN
+		<foreach collection="array" item="id" index="no" open="("
+			separator="," close=")">
+			#{id}
+		</foreach>
+
+	</update>
+	<update id="restore">
+		UPDATE tl_news SET
+		del_flag = 0
+		WHERE id = #{id}
+	</update>
+	<update id="batchRestore">
+		UPDATE tl_news SET
+		del_flag = 0
+		WHERE id IN
+		<foreach collection="array" item="id" index="no" open="("
+			separator="," close=")">
+			#{id}
+		</foreach>
+
+	</update>
+	<select id="findNewsPageByConditions" resultType="News">
+		SELECT
+		<include refid="newsColumns" />
+		FROM tl_news a
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="isHot != null and isHot != '' ">AND a.is_hot=#{isHot}</if>
+			<if test="type != null and type != '' ">AND a.type=#{type}</if>
+
+		</where>
+		ORDER BY a.order_no,a.create_date DESC
+	</select>
+	<select id="getHotNewsList" resultType="News">
+		SELECT
+		<include refid="newsColumns" />
+		FROM tl_news a
+		WHERE a.del_flag = 0
+		AND a.is_hot=1
+		ORDER BY
+		a.order_no,a.create_date DESC
+	</select>
+
+	<select id="getRollNewsList" resultType="News">
+		SELECT
+		<include refid="newsColumns" />
+		FROM tl_news a
+		WHERE a.del_flag = 0
+		AND a.is_roll=1
+		ORDER BY
+		a.order_no,a.create_date DESC
+	</select>
+	<select id="getFirstPageNewsByConditions" resultType="News">
+		select * from(
+		select t.*,rownum rn from(
+		SELECT
+		a.id AS "id",
+		a.title AS "title",
+		a.content AS "content",
+		a.type AS "type",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.is_hot AS "isHot",
+		a.del_flag AS "delFlag",
+		a.author AS "author",
+		a.is_to_first_page AS "isToFirstPage",
+		a.original_link AS "originalLink"
+
+		FROM tl_news a
+		<where>
+			a.del_flag = '0'
+			AND a.is_to_first_page='1'
+			<if test="isHot != null and isHot != '' ">AND a.is_hot=#{isHot}</if>
+			<if test="type != null and type != '' ">AND a.type=#{type}</if>
+		</where>
+		ORDER BY a.order_no,a.create_date DESC
+		)t
+		) where rn &lt; 4
+
+	</select>
+	<update id="publishNews">
+		UPDATE tl_news SET
+		del_flag = 0
+		WHERE id = #{id}
+	</update>
+</mapper>

@@ -1,0 +1,119 @@
+body {
+	overflow: hidden;
+}
+
+.login-wrap {
+	height: 669px;
+	background: url(../images/login-bg.jpg) left center no-repeat;
+}
+
+.login-footer {
+	height: 68px;
+	line-height: 68px;
+	text-align: center;
+	font-size: 12px;
+	color: #5f5f5f;
+	background: #fff;
+}
+
+.login-wrap .login-box {
+	float: right;
+	width: 338px;
+	height: 422px;
+	background: #fff;
+	margin-top: 116px;
+}
+
+.login-wrap .login-box .login-tit {
+	margin: 25px 0 0 0;
+	text-align: center;
+	font-size: 18px;
+	color: #4286ff;
+	font-weight: normal;
+}
+
+.login-wrap .login-box .login-form {
+	margin-top: 13px;
+}
+
+.login-wrap .login-box .login-form .input-box {
+	display: inline-block;
+	width: 252px;
+	height: 50px;
+	line-height: 50px;
+	border: 1px solid #bdc7d3;
+	box-sizing: border-box;
+	margin: 20px 0 0 40px;
+	padding: 0 15px;
+}
+
+.login-wrap .login-box .login-form .input-box .input {
+	display: inline-block;
+	height: 46px;
+	line-height: 46px;
+	border: 0;
+	outline: none;
+	background: #fff;
+	width: 100%;
+	font-size: 14px;
+	color: #979797;
+}
+
+.login-wrap .login-box .login-form  .code-box {
+	
+}
+
+.login-wrap .login-box .login-form  .code-box .input-box {
+	width: 110px;
+	float: left;
+}
+
+.login-wrap .login-box .login-form  .code-img-box {
+	float: left;
+	width: 140px;
+	height: 50px;
+	line-height: 50px;
+	margin: 20px 0 0 10px;
+}
+
+.login-wrap .login-box .login-form  .code-img-box img {
+	width: 70px;
+	height: 25px;
+	vertical-align: middle;
+}
+
+.login-wrap .login-box .login-form  .code-img-box a {
+	display: inline-block;
+	color: #006eff;
+}
+
+.login-wrap .login-box .login-form  .code-img-box .links {
+	display: inline-block;
+	font-size: 14px;
+	color: #006eff;
+	margin-left: 10px;
+}
+
+.login-wrap .login-box .login-form .login-btn {
+	width: 252px;
+	height: 42px;
+	line-height: 42px;
+	text-align: center;
+	color: #fff;
+	font-size: 16px;
+	background: #006eff;
+	margin: 20px 0 0 40px;
+}
+
+.login-wrap .login-box .login-form .login-resgin {
+	text-align: right;
+	margin: 10px 47px 0 0;
+}
+
+.login-wrap .login-box .login-form .login-resgin a {
+	display: inline-block;
+	text-align: right;
+	font-size: 14px;
+	color: #006eff;
+	margin-left: 10px;
+}

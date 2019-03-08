@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.ActivityDao">
+
+	<sql id="activityColumns">
+		a.id AS "id",
+		a.title AS "title",
+		a.cover AS "cover",
+		a.describe AS "describe",
+		a.starttime AS "starttime",
+		a.endtime AS
+		"endtime",
+		a.address AS "address",
+		a.latitude AS "latitude",
+		a.longitude
+		AS "longitude",
+		a.create_date AS "createDate",
+		a.del_flag AS "delFlag",
+		a.type AS "type",
+		a.banner AS "banner",
+		a.is_to_first_page AS
+		"isToFirstPage",
+		a.nature AS "nature"
+	</sql>
+
+	<sql id="activityJoins">
+	</sql>
+
+	<select id="get" resultType="Activity">
+		SELECT
+		<include refid="activityColumns" />
+		FROM tl_activity a
+		<include refid="activityJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="Activity">
+		SELECT
+		<include refid="activityColumns" />
+		FROM tl_activity a
+		<include refid="activityJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="title != null and title != ''">
+				AND a.title LIKE
+				<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+			<if test="type != null and type != ''">
+				AND type = #{type}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="Activity">
+		SELECT
+		<include refid="activityColumns" />
+		FROM tl_activity a
+		<include refid="activityJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_activity(
+		id,
+		title,
+		cover,
+		describe,
+		starttime,
+		endtime,
+		address,
+		latitude,
+		longitude,
+		create_date,
+		del_flag,
+		type,
+		is_to_first_page,
+		nature,
+		banner
+		) VALUES (
+		#{id},
+		#{title},
+		#{cover},
+		#{describe},
+		#{starttime},
+		#{endtime},
+		#{address},
+		#{latitude},
+		#{longitude},
+		#{createDate},
+		#{delFlag},
+		#{type},
+		#{isToFirstPage},
+		#{nature},
+		#{banner}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_activity SET
+		title = #{title},
+		cover = #{cover},
+		describe = #{describe},
+		starttime = #{starttime},
+		endtime = #{endtime},
+		address = #{address},
+		latitude = #{latitude},
+		longitude = #{longitude},
+		type = #{type},
+		is_to_first_page=#{isToFirstPage},
+		nature = #{nature},
+		banner = #{banner}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE tl_activity SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+	<select id="getActivityList" resultType="Activity">
+		SELECT
+		a.id AS "id",
+		a.title AS "title",
+		a.cover AS "cover",
+		a.describe AS "describe",
+		a.starttime AS "starttime",
+		a.endtime AS "endtime",
+		a.address AS "address",
+		a.latitude AS "latitude",
+		a.longitude AS "longitude",
+		a.create_date AS "createDate",
+		a.del_flag AS "delFlag",
+		a.type AS "type",
+		a.banner AS "banner",
+		a.nature AS "nature",
+		(select count(0) from tl_activity_join j where j.activity_id=a.id) "joinNum"
+		FROM tl_activity a
+
+
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="type != null and type!=''">
+				AND a.type=#{type}
+			</if>
+		</where>
+
+	</select>
+	<select id="getUnderwayActNum" resultType="int">
+		select count(0)
+		from tl_activity a
+		where a.endtime > (select sysdate from dual)
+	</select>
+	<select id="getJoinNumOfPeople" resultType="int">
+		select count(0)
+		from tl_activity_join j join tl_activity a
+		on j.activity_id=a.id
+		and a.endtime>(select sysdate from dual)
+	</select>
+	<select id="getActivityById" resultType="Activity">
+		SELECT
+		a.id AS "id",
+		a.title AS "title",
+		a.cover AS "cover",
+		a.describe AS "describe",
+		a.starttime AS "starttime",
+		a.endtime AS "endtime",
+		a.address AS "address",
+		a.latitude AS "latitude",
+		a.longitude AS "longitude",
+		a.create_date AS "createDate",
+		a.del_flag AS "delFlag",
+		a.type AS "type",
+		a.banner AS "banner",
+		a.nature AS "nature",
+		a.click_num AS "clickNum",
+		(select count(0) from tl_activity_join j where j.activity_id=a.id) "joinNum",
+		(select count(0) from tl_like l where l.activity_id=a.id) "likeNum"
+		FROM tl_activity a
+		WHERE a.id = #{id}
+	</select>
+	<update id="addActClickNum">
+		update tl_activity set click_num=click_num+1
+		where
+		id=#{id}
+	</update>
+	<select id="getFirstActivity" resultType="Activity">
+		select * from(
+		SELECT
+		a.id AS "id",
+		a.title AS "title",
+		a.cover AS "cover",
+		a.describe AS "describe",
+		a.starttime AS "starttime",
+		a.endtime AS "endtime",
+		a.create_date AS "createDate",
+		a.del_flag AS "delFlag",
+		a.type AS "type",
+		a.banner AS "banner",
+		a.is_to_first_page AS "isToFirstPage",
+		rownum rn
+		FROM tl_activity a
+		where
+		a.del_flag = '0'
+		AND a.is_to_first_page='1'
+		ORDER BY a.create_date DESC
+		) where rn &lt; 3
+	</select>
+</mapper>

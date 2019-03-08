@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.CollectDao">
+
+	<sql id="tlCollectColumns">
+		a.id AS "id",
+		a.activity_id AS "activity.id",
+		ta.title AS
+		"activity.title",
+		ta.describe AS "activity.describe",
+		ta.starttime AS
+		"activity.starttime",
+		ta.endtime AS "activity.endtime",
+		a.user_id AS
+		"user.id",
+		a.create_date AS "createDate",
+		u3.name AS "user.name"
+	</sql>
+
+	<sql id="tlCollectJoins">
+		LEFT JOIN sys_user u3 ON u3.id = a.user_id
+		LEFT JOIN
+		TL_ACTIVITY ta ON ta.id = a.activity_id
+	</sql>
+
+	<select id="get" resultType="Collect">
+		SELECT
+		<include refid="tlCollectColumns" />
+		FROM tl_collect a
+		<include refid="tlCollectJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="getByUserAndActivity" resultType="Collect">
+		SELECT
+		<include refid="tlCollectColumns" />
+		FROM tl_collect a
+		<include refid="tlCollectJoins" />
+		WHERE a.user_id = #{user.id}
+		and a.activity_id = #{activity.id}
+	</select>
+
+	<select id="findList" resultType="Collect">
+		SELECT
+		<include refid="tlCollectColumns" />
+		FROM tl_collect a
+		<include refid="tlCollectJoins" />
+		<where>
+			<if test="user != null and user.id != null and user.id != ''">
+				AND a.user_id = #{user.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="Collect">
+		SELECT
+		<include refid="tlCollectColumns" />
+		FROM tl_collect a
+		<include refid="tlCollectJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_collect(
+		id,
+		activity_id,
+		user_id,
+		create_date
+		) VALUES (
+		#{id},
+		#{activity.id},
+		#{user.id},
+		#{createDate}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_collect SET
+		activity_id = #{activity.id},
+		user_id = #{user.id}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		DELETE FROM tl_collect
+		WHERE id = #{id}
+	</update>
+	<select id="getNumOfCollectThisAct" resultType="int">
+		select count(0)
+		from tl_collect a
+		where a.activity_id=#{activity.id}
+		and a.user_id =#{user.id}
+	</select>
+</mapper>

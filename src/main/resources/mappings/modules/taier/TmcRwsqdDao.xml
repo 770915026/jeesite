@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.TmcRwsqdDao">
+
+	<sql id="tmcRwsqdColumns">
+		a.sjdw AS "sjdw",
+		a.sjdwdz AS "sjdwdz",
+		a.scc AS "scc",
+		a.sccdz AS "sccdz",
+		a.zzsmc AS "zzsmc",
+		a.zzsdz AS "zzsdz",
+		a.cd AS "cd",
+		a.lxrmc AS "lxrmc",
+		a.yddh AS "yddh",
+		a.cz AS "cz",
+		a.email AS "email",
+		a.sbxh AS "sbxh",
+		a.jclb AS "jclb",
+		a.csyj AS "csyj",
+		a.bglx AS "bglx",
+		a.yhsm AS "yhsm",
+		a.yhdbqz AS "yhdbqz",
+		a.yhdbqzrq AS "yhdbqzrq",
+		a.zxsm
+		AS "zxsm",
+		a.zxrwslyqz AS "zxrwslyqz",
+		a.zxrwslyqzrq AS "zxrwslyqzrq",
+		a.bbxx AS "bbxx",
+		a.xxxx AS "xxxx",
+		a.bz AS "bz",
+		a.reader AS "reader",
+		a.writer AS "writer",
+		a.pk1 AS "pk1",
+		a.sbmc AS "sbmc",
+		a.cccsqh AS
+		"cccsqh",
+		a.bh AS "bh",
+		a.dj AS "dj",
+		a.ejdkxx AS "ejdkxx",
+		a.kclx AS
+		"kclx",
+		a.sfzccmmb AS "sfzccmmb",
+		a.sfzcegprsgn AS "sfzcegprsgn",
+		a.sfzcgprsgn AS "sfzcgprsgn",
+		a.sfzcgpsgn AS "sfzcgpsgn",
+		a.sfzclygn AS
+		"sfzclygn",
+		a.sfzcsyjgn AS "sfzcsyjgn",
+		a.sfzcwapi AS "sfzcwapi",
+		a.rjbbcxfs AS "rjbbcxfs",
+		a.rjbbh AS "rjbbh",
+		a.yjbbh AS "yjbbh",
+		a.edj
+		AS "edj",
+		a.edsrdy AS "edsrdy",
+		a.fsgl AS "fsgl",
+		a.edgl AS "edgl",
+		a.fspl AS "fspl",
+		a.scdl AS "scdl",
+		a.scdy AS "scdy",
+		a.zdsrdy AS
+		"zdsrdy",
+		a.sffsj AS "sffsj",
+		a.zt AS "zt",
+		a.sqrq AS "sqrq",
+		a.tysm AS
+		"tysm",
+		a.jlsj AS "jlsj",
+		a.sqfs AS "sqfs",
+		a.fszs AS "fszs",
+		a.slbh AS
+		"slbh",
+		a.sbjc AS "sbjc",
+		a.sfsc AS "sfsc",
+		a.gjwwbg AS "gjwwbg",
+		a.bgsm
+		AS "bgsm",
+		a.jclbo AS "jclbo",
+		a.sfbm AS "sfbm",
+		a.sfcwapi AS "sfcwapi",
+		a.sblb AS "sblb",
+		a.gdh AS "gdh",
+		a.xxlb AS "xxlb",
+		a.drfs AS "drfs",
+		a.rwly AS "rwly",
+		a.dls AS "dls",
+		a.dhyj AS "dhyj",
+		a.status AS "status",
+		a.type AS "type",
+		a.create_user_id AS "createUserId"
+
+	</sql>
+
+	<sql id="tmcRwsqdJoins">
+	</sql>
+
+	<select id="get" resultType="TmcRwsqd">
+		SELECT
+		<include refid="tmcRwsqdColumns" />
+		FROM tmc_rwsqd a
+		<include refid="tmcRwsqdJoins" />
+		WHERE a.pk1 = #{pk1}
+	</select>
+
+	<select id="findList" resultType="TmcRwsqd">
+		SELECT
+		<include refid="tmcRwsqdColumns" />
+		FROM tmc_rwsqd a
+		<include refid="tmcRwsqdJoins" />
+		<where>
+			<if test="type!=null and type!=''">
+				AND a.type=#{type}
+			</if>
+			<if test="createUserId!=null and createUserId!=''">
+				AND a.create_user_id=#{createUserId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="TmcRwsqd">
+		SELECT
+		<include refid="tmcRwsqdColumns" />
+		FROM tmc_rwsqd a
+		<include refid="tmcRwsqdJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tmc_rwsqd(
+		sjdw,
+		sjdwdz,
+		scc,
+		sccdz,
+		zzsmc,
+		zzsdz,
+		cd,
+		lxrmc,
+		yddh,
+		cz,
+		email,
+		sbxh,
+		jclb,
+		csyj,
+		bglx,
+		yhsm,
+		yhdbqz,
+		yhdbqzrq,
+		zxsm,
+		zxrwslyqz,
+		zxrwslyqzrq,
+		bbxx,
+		xxxx,
+		bz,
+		reader,
+		writer,
+		pk1,
+		sbmc,
+		cccsqh,
+		bh,
+		dj,
+		ejdkxx,
+		kclx,
+		sfzccmmb,
+		sfzcegprsgn,
+		sfzcgprsgn,
+		sfzcgpsgn,
+		sfzclygn,
+		sfzcsyjgn,
+		sfzcwapi,
+		rjbbcxfs,
+		rjbbh,
+		yjbbh,
+		edj,
+		edsrdy,
+		fsgl,
+		edgl,
+		fspl,
+		scdl,
+		scdy,
+		zdsrdy,
+		sffsj,
+		zt,
+		sqrq,
+		tysm,
+		jlsj,
+		sqfs,
+		fszs,
+		slbh,
+		sbjc,
+		sfsc,
+		gjwwbg,
+		bgsm,
+		jclbo,
+		sfbm,
+		sfcwapi,
+		sblb,
+		gdh,
+		xxlb,
+		drfs,
+		rwly,
+		dls,
+		status,
+		type,
+		create_user_id
+		) VALUES (
+		#{sjdw},
+		#{sjdwdz},
+		#{scc},
+		#{sccdz},
+		#{zzsmc},
+		#{zzsdz},
+		#{cd},
+		#{lxrmc},
+		#{yddh},
+		#{cz},
+		#{email},
+		#{sbxh},
+		#{jclb},
+		#{csyj},
+		#{bglx},
+		#{yhsm},
+		#{yhdbqz},
+		#{yhdbqzrq},
+		#{zxsm},
+		#{zxrwslyqz},
+		#{zxrwslyqzrq},
+		#{bbxx},
+		#{xxxx},
+		#{bz},
+		#{reader},
+		#{writer},
+		#{pk1},
+		#{sbmc},
+		#{cccsqh},
+		#{bh},
+		#{dj},
+		#{ejdkxx},
+		#{kclx},
+		#{sfzccmmb},
+		#{sfzcegprsgn},
+		#{sfzcgprsgn},
+		#{sfzcgpsgn},
+		#{sfzclygn},
+		#{sfzcsyjgn},
+		#{sfzcwapi},
+		#{rjbbcxfs},
+		#{rjbbh},
+		#{yjbbh},
+		#{edj},
+		#{edsrdy},
+		#{fsgl},
+		#{edgl},
+		#{fspl},
+		#{scdl},
+		#{scdy},
+		#{zdsrdy},
+		#{sffsj},
+		#{zt},
+		#{sqrq},
+		#{tysm},
+		#{jlsj},
+		#{sqfs},
+		#{fszs},
+		#{slbh},
+		#{sbjc},
+		#{sfsc},
+		#{gjwwbg},
+		#{bgsm},
+		#{jclbo},
+		#{sfbm},
+		#{sfcwapi},
+		#{sblb},
+		#{gdh},
+		#{xxlb},
+		#{drfs},
+		#{rwly},
+		#{dls},
+		#{status},
+		#{type},
+		#{createUserId}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tmc_rwsqd SET
+		sjdw = #{sjdw},
+		sjdwdz = #{sjdwdz},
+		scc = #{scc},
+		sccdz = #{sccdz},
+		zzsmc = #{zzsmc},
+		zzsdz = #{zzsdz},
+		cd = #{cd},
+		lxrmc = #{lxrmc},
+		yddh = #{yddh},
+		cz = #{cz},
+		email = #{email},
+		sbxh = #{sbxh},
+		jclb = #{jclb},
+		csyj = #{csyj},
+		bglx = #{bglx},
+		yhsm = #{yhsm},
+		yhdbqz = #{yhdbqz},
+		yhdbqzrq = #{yhdbqzrq},
+		zxsm = #{zxsm},
+		zxrwslyqz = #{zxrwslyqz},
+		zxrwslyqzrq = #{zxrwslyqzrq},
+		bbxx = #{bbxx},
+		xxxx = #{xxxx},
+		bz = #{bz},
+		reader = #{reader},
+		writer = #{writer},
+		sbmc = #{sbmc},
+		cccsqh = #{cccsqh},
+		dj = #{dj},
+		ejdkxx = #{ejdkxx},
+		kclx = #{kclx},
+		sfzccmmb = #{sfzccmmb},
+		sfzcegprsgn = #{sfzcegprsgn},
+		sfzcgprsgn = #{sfzcgprsgn},
+		sfzcgpsgn = #{sfzcgpsgn},
+		sfzclygn = #{sfzclygn},
+		sfzcsyjgn = #{sfzcsyjgn},
+		sfzcwapi = #{sfzcwapi},
+		rjbbcxfs = #{rjbbcxfs},
+		rjbbh = #{rjbbh},
+		yjbbh = #{yjbbh},
+		edj = #{edj},
+		edsrdy = #{edsrdy},
+		fsgl = #{fsgl},
+		edgl = #{edgl},
+		fspl = #{fspl},
+		scdl = #{scdl},
+		scdy = #{scdy},
+		zdsrdy = #{zdsrdy},
+		sffsj = #{sffsj},
+		zt = #{zt},
+		sqrq = #{sqrq},
+		tysm = #{tysm},
+		jlsj = #{jlsj},
+		sqfs = #{sqfs},
+		fszs = #{fszs},
+		slbh = #{slbh},
+		sbjc = #{sbjc},
+		sfsc = #{sfsc},
+		gjwwbg = #{gjwwbg},
+		bgsm = #{bgsm},
+		jclbo = #{jclbo},
+		sfbm = #{sfbm},
+		sfcwapi = #{sfcwapi},
+		sblb = #{sblb},
+		gdh = #{gdh},
+		xxlb = #{xxlb},
+		drfs = #{drfs},
+		rwly = #{rwly},
+		dls = #{dls}
+		WHERE pk1 = #{pk1}
+	</update>
+
+	<update id="delete">
+		DELETE FROM tmc_rwsqd
+		WHERE pk1 = #{pk1}
+	</update>
+	<update id="updateStatus">
+		UPDATE tmc_rwsqd SET
+		status=#{status}
+		WHERE pk1 = #{pk1}
+	</update>
+	<update id="updateZt">
+		UPDATE tmc_rwsqd SET
+		zt=#{zt}
+		WHERE pk1 = #{pk1}
+	</update>
+</mapper>

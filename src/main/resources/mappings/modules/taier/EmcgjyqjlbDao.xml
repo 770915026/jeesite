@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.EmcgjyqjlbDao">
+
+	<sql id="emcgjyqjlbColumns">
+		a.gjjmc AS "gjjmc",
+		a.xh AS "xh",
+		a.gg AS "gg",
+		a.scc AS
+		"scc",
+		a.bz AS "bz",
+		a.reader AS "reader",
+		a.writer AS "writer",
+		a.pk1 AS
+		"pk1",
+		a.glpk AS "glpk",
+		a.sfqr AS "sfqr",
+		a.wh AS "wh",
+		a.scqy AS "scqy",
+		a.sybz AS "sybz",
+		a.xhh AS "xhh",
+		a.zzs AS "zzs",
+		a.lx AS "lx"
+	</sql>
+
+	<sql id="emcgjyqjlbJoins">
+	</sql>
+
+	<select id="get" resultType="Emcgjyqjlb">
+		SELECT
+		<include refid="emcgjyqjlbColumns" />
+		FROM emcgjyqjlb a
+		<include refid="emcgjyqjlbJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="Emcgjyqjlb">
+		SELECT
+		<include refid="emcgjyqjlbColumns" />
+		FROM emcgjyqjlb a
+		<include refid="emcgjyqjlbJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="Emcgjyqjlb">
+		SELECT
+		<include refid="emcgjyqjlbColumns" />
+		FROM emcgjyqjlb a
+		<include refid="emcgjyqjlbJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO emcgjyqjlb(
+		gjjmc,
+		xh,
+		gg,
+		scc,
+		bz,
+		reader,
+		writer,
+		pk1,
+		glpk,
+		sfqr,
+		wh,
+		scqy,
+		sybz,
+		xhh,
+		zzs,
+		lx
+		) VALUES (
+		#{gjjmc},
+		#{xh},
+		#{gg},
+		#{scc},
+		#{bz},
+		#{reader},
+		#{writer},
+		#{pk1},
+		#{glpk},
+		#{sfqr},
+		#{wh},
+		#{scqy},
+		#{sybz},
+		#{xhh},
+		#{zzs},
+		#{lx}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE emcgjyqjlb SET
+		gjjmc = #{gjjmc},
+		xh = #{xh},
+		gg = #{gg},
+		scc = #{scc},
+		bz = #{bz},
+		reader = #{reader},
+		writer = #{writer},
+		sfqr = #{sfqr},
+		wh = #{wh},
+		scqy = #{scqy},
+		sybz = #{sybz},
+		xhh = #{xhh},
+		zzs = #{zzs},
+		lx = #{lx}
+		WHERE pk1 = #{pk1}
+	</update>
+
+	<update id="delete">
+		DELETE FROM emcgjyqjlb
+		WHERE id = #{id}
+	</update>
+	<delete id="deleteByGlpk">
+		DELETE FROM emcgjyqjlb
+		WHERE glpk = #{glpk}
+	</delete>
+	<select id="getEmcgjyqjlbListByPk1" resultType="Emcgjyqjlb">
+		SELECT
+		<include refid="emcgjyqjlbColumns" />
+		FROM emcgjyqjlb a
+		<include refid="emcgjyqjlbJoins" />
+		WHERE glpk = #{pk1}
+	</select>
+</mapper>

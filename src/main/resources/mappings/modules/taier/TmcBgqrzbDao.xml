@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.TmcBgqrzbDao">
+
+	<sql id="tmcBgqrzbColumns">
+		a.gdh AS "gdh",
+		a.xh AS "xh",
+		a.mc AS "mc",
+		a.bgq AS "bgq",
+		a.bgh AS "bgh",
+		a.glpk1 AS "glpk1",
+		a.bm AS "bm",
+		a.reader AS "reader",
+		a.writer AS "writer",
+		a.pk1 AS "pk1",
+		a.lx AS "lx"
+	</sql>
+
+	<sql id="tmcBgqrzbJoins">
+	</sql>
+
+	<select id="get" resultType="TmcBgqrzb">
+		SELECT
+		<include refid="tmcBgqrzbColumns" />
+		FROM tmc_bgqrzb a
+		<include refid="tmcBgqrzbJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="TmcBgqrzb">
+		SELECT
+		<include refid="tmcBgqrzbColumns" />
+		FROM tmc_bgqrzb a
+		<include refid="tmcBgqrzbJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="TmcBgqrzb">
+		SELECT
+		<include refid="tmcBgqrzbColumns" />
+		FROM tmc_bgqrzb a
+		<include refid="tmcBgqrzbJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tmc_bgqrzb(
+		gdh,
+		xh,
+		mc,
+		bgq,
+		bgh,
+		glpk1,
+		bm,
+		reader,
+		writer,
+		pk1,
+		lx
+		) VALUES (
+		#{gdh},
+		#{xh},
+		#{mc},
+		#{bgq},
+		#{bgh},
+		#{glpk1},
+		#{bm},
+		#{reader},
+		#{writer},
+		#{pk1},
+		#{lx}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tmc_bgqrzb SET
+		xh = #{xh},
+		mc = #{mc},
+		bgq = #{bgq},
+		bgh = #{bgh},
+		glpk1 = #{glpk1},
+		bm = #{bm},
+		reader = #{reader},
+		writer = #{writer},
+		lx = #{lx}
+		WHERE pk1 = #{pk1}
+	</update>
+
+	<update id="delete">
+		DELETE FROM tmc_bgqrzb
+		WHERE id = #{id}
+	</update>
+	<select id="getTmcBgqrzbListBypk1" resultType="TmcBgqrzb">
+		SELECT
+		<include refid="tmcBgqrzbColumns" />
+		FROM tmc_bgqrzb a
+		WHERE a.gdh = #{pk1}
+	</select>
+	<delete id="deleteByGdh">
+		DELETE FROM tmc_bgqrzb
+		WHERE gdh = #{gdh}
+	</delete>
+</mapper>

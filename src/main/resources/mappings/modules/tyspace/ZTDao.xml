@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.tyspace.dao.ZTDao">
+	<select id="getDynamicQuery" parameterType="java.util.Map" statementType="STATEMENT" resultType="ZT">
+		select ${queryField} from ${tableName} limit 1
+	</select>
+	<select id="getWd" resultType="ZT">
+		select v_p,v_q,v_r,v_s,v_t,v_x from sjb_wd 
+	</select>
+	<select id="getCurrent" resultType="ZT">
+		select v_ae,v_af,v_ag from sjb_zt 
+	</select>
+	<select id="getVoltage" resultType="ZT">
+		select v_ab,v_ac,v_ad from sjb_zt 
+	</select>
+	<select id="getDydl" resultType="ZT">
+		select v_ah,v_ai,v_aj from sjb_zt 
+	</select>
+</mapper>

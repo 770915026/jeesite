@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.TlActivityImgDao">
+
+	<sql id="tlActivityImgColumns">
+		a.id AS "id",
+		a.img_url AS "imgUrl",
+		a.create_date AS
+		"createDate",
+		a.sort AS "sort",
+		a.del_flag AS "delFlag"
+	</sql>
+
+	<sql id="tlActivityImgJoins">
+	</sql>
+
+	<select id="get" resultType="TlActivityImg">
+		SELECT
+		<include refid="tlActivityImgColumns" />
+		FROM tl_activity_img a
+		<include refid="tlActivityImgJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="TlActivityImg">
+		SELECT
+		<include refid="tlActivityImgColumns" />
+		FROM tl_activity_img a
+		<include refid="tlActivityImgJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		ORDER BY a.sort
+	</select>
+
+	<select id="findAllList" resultType="TlActivityImg">
+		SELECT
+		<include refid="tlActivityImgColumns" />
+		FROM tl_activity_img a
+		<include refid="tlActivityImgJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_activity_img(
+		id,
+		img_url,
+		create_date,
+		sort,
+		del_flag
+		) VALUES (
+		#{id},
+		#{imgUrl},
+		#{createDate},
+		#{sort},
+		#{delFlag}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_activity_img SET
+		img_url = #{imgUrl},
+		sort = #{sort}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE tl_activity_img SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+</mapper>

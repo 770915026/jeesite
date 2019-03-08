@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.TmcBbxxDao">
+
+	<sql id="tmcBbxxColumns">
+		a.cxfs AS "cxfs",
+		a.rjbbh AS "rjbbh",
+		a.yjbbh AS "yjbbh",
+		a.bh AS "bh",
+		a.reader AS "reader",
+		a.writer AS "writer",
+		a.pk1 AS "pk1"
+	</sql>
+
+	<sql id="tmcBbxxJoins">
+	</sql>
+
+	<select id="get" resultType="TmcBbxx">
+		SELECT
+		<include refid="tmcBbxxColumns" />
+		FROM tmc_bbxx a
+		<include refid="tmcBbxxJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="TmcBbxx">
+		SELECT
+		<include refid="tmcBbxxColumns" />
+		FROM tmc_bbxx a
+		<include refid="tmcBbxxJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="TmcBbxx">
+		SELECT
+		<include refid="tmcBbxxColumns" />
+		FROM tmc_bbxx a
+		<include refid="tmcBbxxJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tmc_bbxx(
+		cxfs,
+		rjbbh,
+		yjbbh,
+		bh,
+		reader,
+		writer,
+		pk1
+		) VALUES (
+		#{cxfs},
+		#{rjbbh},
+		#{yjbbh},
+		#{bh},
+		#{reader},
+		#{writer},
+		#{pk1}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tmc_bbxx SET
+		cxfs = #{cxfs},
+		rjbbh = #{rjbbh},
+		yjbbh = #{yjbbh},
+		reader = #{reader},
+		writer = #{writer}
+		WHERE pk1 = #{pk1}
+	</update>
+
+	<update id="delete">
+		DELETE FROM tmc_bbxx
+		WHERE id = #{id}
+	</update>
+	<select id="getTmcBbxxByPk1" resultType="TmcBbxx">
+		SELECT
+		<include refid="tmcBbxxColumns" />
+		FROM tmc_bbxx a
+		WHERE a.bh = #{pk1}
+	</select>
+	<delete id="deleteByBh">
+		DELETE FROM tmc_bbxx
+		WHERE bh = #{bh}
+	</delete>
+</mapper>

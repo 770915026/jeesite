@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.AboutUsDao">
+
+	<sql id="aboutUsColumns">
+		a.id AS "id",
+		a.situation_content AS "situationContent",
+		a.org_set_content AS "orgSetContent",
+		a.trade_content AS
+		"tradeContent",
+		a.create_date AS "createDate",
+		a.create_by AS
+		"createBy.id",
+		a.address AS "address",
+		a.phone AS "phone",
+		a.qqgroup AS
+		"qqgroup",
+		a.email AS "email",
+		a.longitude AS "longitude",
+		a.latitude AS
+		"latitude",
+		a.situation_img AS "situationImg",
+		a.org_set_img AS
+		"orgSetImg",
+		a.trade_img AS "tradeImg"
+	</sql>
+
+	<sql id="aboutUsJoins">
+	</sql>
+
+	<select id="get" resultType="AboutUs">
+		SELECT
+		<include refid="aboutUsColumns" />
+		FROM tl_about_us a
+		<include refid="aboutUsJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="AboutUs">
+		SELECT
+		<include refid="aboutUsColumns" />
+		FROM tl_about_us a
+		<include refid="aboutUsJoins" />
+		order by a.create_date desc
+	</select>
+
+	<select id="findAllList" resultType="AboutUs">
+		SELECT
+		<include refid="aboutUsColumns" />
+		FROM tl_about_us a
+		<include refid="aboutUsJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_about_us(
+		id,
+		situation_content,
+		org_set_content,
+		trade_content,
+		create_date,
+		create_by,
+		address,
+		phone,
+		qqgroup,
+		email,
+		longitude,
+		latitude,
+		situation_img,
+		org_set_img,
+		trade_img
+		) VALUES (
+		#{id},
+		#{situationContent},
+		#{orgSetContent},
+		#{tradeContent},
+		#{createDate},
+		#{createBy.id},
+		#{address},
+		#{phone},
+		#{qqgroup},
+		#{email},
+		#{longitude},
+		#{latitude},
+		#{situationImg},
+		#{orgSetImg},
+		#{tradeImg}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_about_us SET
+		situation_content = #{situationContent},
+		org_set_content = #{orgSetContent},
+		trade_content = #{tradeContent},
+		address = #{address},
+		phone = #{phone},
+		qqgroup = #{qqgroup},
+		email = #{email},
+		longitude = #{longitude},
+		latitude = #{latitude},
+		situation_img = #{situationImg},
+		org_set_img = #{orgSetImg},
+		trade_img = #{tradeImg}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		DELETE FROM tl_about_us
+		WHERE id = #{id}
+	</update>
+	<select id="getLastAboutUs" resultType="AboutUs">
+		select * from(
+		SELECT
+		<include refid="aboutUsColumns" />
+		FROM tl_about_us a
+		order by a.create_date desc)
+		where rownum=1
+	</select>
+</mapper>

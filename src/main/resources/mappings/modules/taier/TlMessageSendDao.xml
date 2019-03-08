@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.TlMessageSendDao">
+
+	<sql id="tlMessageSendColumns">
+		a.id AS "id",
+		a.useid AS "user.id",
+		u.name AS "user.name",
+		a.messageid AS "messageid",
+		a.isread AS "isread",
+		a.create_date AS
+		"createDate",
+		a.update_date AS "updateDate",
+		b.tittle AS
+		"tlMessage.tittle",
+		b.content AS "tlMessage.content",
+		b.type AS
+		"tlMessage.type",
+		b.id AS "tlMessage.id"
+	</sql>
+
+	<sql id="tlMessageSendJoins">
+		JOIN sys_user u ON u.id = a.useid
+		LEFT JOIN tl_message b ON
+		a.messageid = b.id
+	</sql>
+
+	<select id="get" resultType="TlMessageSend">
+		SELECT
+		<include refid="tlMessageSendColumns" />
+		FROM tl_message_send a
+		<include refid="tlMessageSendJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="TlMessageSend">
+		SELECT
+		<include refid="tlMessageSendColumns" />
+		FROM tl_message_send a
+		<include refid="tlMessageSendJoins" />
+		<where>
+			<if test="user != null and user.id != null and user.id != ''">
+				AND a.useid = #{user.id}
+			</if>
+			<if test="messageid != null and messageid != ''">
+				AND messageid = #{messageid}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="TlMessageSend">
+		SELECT
+		<include refid="tlMessageSendColumns" />
+		FROM tl_message_send a
+		<include refid="tlMessageSendJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_message_send(
+		id,
+		useid,
+		messageid,
+		isread,
+		create_date,
+		update_date
+		) VALUES (
+		#{id},
+		#{user.id},
+		#{messageid},
+		#{isread},
+		#{createDate},
+		#{updateDate}
+		)
+	</insert>
+	<insert id="insertAll" parameterType="List">
+		INSERT INTO tl_message_send(
+		id,
+		useid,
+		messageid,
+		isread,
+		create_date,
+		update_date
+		)
+		<if test="list.get(0).dbName == 'oracle'">
+			<foreach collection="list" item="e" separator=" union all ">
+				SELECT #{e.id},
+				#{e.user.id},
+				#{e.messageid},
+				#{e.isread},
+				#{e.createDate},
+				#{e.updateDate} FROM dual
+			</foreach>
+		</if>
+		<if test="list.get(0).dbName == 'mssql' or list.get(0).dbName == 'mysql'">
+			VALUES
+			<foreach collection="list" item="e" open="" separator=","
+				close="">
+				(#{e.id},
+				#{e.user.id},
+				#{e.messageid},
+				#{e.isread},
+				#{e.createDate},
+				#{e.updateDate})
+			</foreach>
+		</if>
+	</insert>
+	<update id="update">
+		UPDATE tl_message_send SET
+		useid = #{use.id},
+		messageid = #{messageid},
+		isread = #{isread},
+		update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		DELETE FROM tl_message_send
+		WHERE id = #{id}
+	</update>
+
+	<update id="deleteByMsgId">
+		DELETE FROM tl_message_send
+		WHERE messageid =
+		#{messageid}
+	</update>
+</mapper>

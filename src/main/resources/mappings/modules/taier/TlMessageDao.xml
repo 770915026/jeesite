@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.TlMessageDao">
+
+	<sql id="tlMessageColumns">
+		a.id AS "id",
+		a.type AS "type",
+		a.tittle AS "tittle",
+		a.content AS "content",
+		a.create_date AS "createDate",
+		a.update_date AS
+		"updateDate"
+	</sql>
+
+	<sql id="tlMessageJoins">
+	</sql>
+
+	<select id="get" resultType="TlMessage">
+		SELECT
+		<include refid="tlMessageColumns" />
+		FROM tl_message a
+		<include refid="tlMessageJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="TlMessage">
+		SELECT
+		<include refid="tlMessageColumns" />
+		FROM tl_message a
+		<include refid="tlMessageJoins" />
+		<where>
+
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="tittle != null and tittle != ''">
+				AND a.tittle LIKE
+				<if test="dbName == 'oracle'">'%'||#{tittle}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{tittle}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{tittle},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="TlMessage">
+		SELECT
+		<include refid="tlMessageColumns" />
+		FROM tl_message a
+		<include refid="tlMessageJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_message(
+		id,
+		type,
+		tittle,
+		content,
+		create_date,
+		update_date
+		) VALUES (
+		#{id},
+		#{type},
+		#{tittle},
+		#{content},
+		#{createDate},
+		#{updateDate}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_message SET
+		type = #{type},
+		tittle = #{tittle},
+		content = #{content},
+		create_date = #{createDate},
+		update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		DELETE FROM tl_message
+		WHERE id = #{id}
+	</update>
+
+</mapper>

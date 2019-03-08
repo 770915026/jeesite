@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.TlQrcodeDao">
+
+	<sql id="tlQrcodeColumns">
+		a.id AS "id",
+		a.weixinurl AS "weixinurl",
+		a.weibourl AS
+		"weibourl",
+		a.create_date AS "createDate",
+		a.loginurl AS "loginurl"
+	</sql>
+
+	<sql id="tlQrcodeJoins">
+	</sql>
+
+	<select id="get" resultType="TlQrcode">
+		SELECT
+		<include refid="tlQrcodeColumns" />
+		FROM tl_qrcode a
+		<include refid="tlQrcodeJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="TlQrcode">
+		SELECT
+		<include refid="tlQrcodeColumns" />
+		FROM tl_qrcode a
+		<include refid="tlQrcodeJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="TlQrcode">
+		SELECT
+		<include refid="tlQrcodeColumns" />
+		FROM tl_qrcode a
+		<include refid="tlQrcodeJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_qrcode(
+		id,
+		weixinurl,
+		weibourl,
+		create_date,
+		loginurl
+		) VALUES (
+		#{id},
+		#{weixinurl},
+		#{weibourl},
+		#{createDate},
+		#{loginurl}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_qrcode SET
+		weixinurl = #{weixinurl},
+		weibourl = #{weibourl},
+		loginurl = #{loginurl}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		DELETE FROM tl_qrcode
+		WHERE id = #{id}
+	</update>
+
+</mapper>

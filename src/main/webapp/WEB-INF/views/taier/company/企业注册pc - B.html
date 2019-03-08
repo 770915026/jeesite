@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+<meta name="toTop" content="true">
+<!--bootstrap框架↓-->
+<link href="bootstrap-3.3.7-dist/css/bootstrap.css" rel="stylesheet"
+	type="text/css" />
+<link href="bootstrap-3.3.7-dist/css/bootstrap-theme.css"
+	rel="stylesheet" type="text/css" />
+<!--本页面CSS↓-->
+<link rel="stylesheet" href="css/style.css">
+
+<!--字体图标css-->
+<link rel="stylesheet" href="font/demo.css">
+<link rel="stylesheet" href="font/iconfont.css">
+<!--bootstrap框架↓-->
+<script type="text/javascript" src="js/jquery-3.1.1.js"></script>
+<script type="text/javascript"
+	src="bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+</head>
+<body>
+	<!--头部开始-->
+
+	<section class="personal_box">
+		<header class="head">
+			<img src="images/logo.png"> <span class="righttop"> <span
+				class="search"><input type="text" placeholder="请输入关键词"
+					class="searchinput"><i class="icon iconfont icon-sousuo"></i></span>
+				<span class="loginicon"><a href="#"><i
+						class="icon iconfont icon-denglu"></i>登录</a></span> <span class="loginicon"><a
+					href="#"><i class="icon iconfont icon-suo-copy"></i>注册</a></span>
+			</span>
+		</header>
+		<nav>
+			<ul class="nav_list">
+				<li><a href="#">首页</a></li>
+				<li><a href="#">新闻</a></li>
+				<li><a href="#">在线业务办理</a></li>
+				<li><a href="#">企业产品信息联合发布</a></li>
+				<li><a href="#">行业分析报告</a></li>
+				<li><a href="#" class="news_top1">最新活动<img
+						src="images/hot.png" class="hot"></a></li>
+				<li><a href="#">用户调查</a></li>
+				<li><a href="#">关于我们</a></li>
+				<li><a href="#">联系我们</a></li>
+			</ul>
+			<button class="perbtn">在线业务办理</button>
+		</nav>
+	</section>
+	<!--头部end-->
+	<section class="register_box">
+		<div class="register1200 qiye_reg">
+			<h2>企业注册</h2>
+			<div>说明：目前网站支持的业务有进网业务的在线下单、查询，CCC、企业信息联合发布、预置应用公示、其他委托业务的下单、查询业务</div>
+		</div>
+		<div class="qiye_reg">
+			<p class="acc_info">账号信息</p>
+			<form class="acc_form">
+				<p>
+					<label>用户名<sup>*</sup>：
+					</label><input type="text" placeholder="4-50位的英文字母或阿拉伯数字 ">
+				</p>
+				<p>
+					<label>密码<sup>*</sup>：
+					</label><input id="pass" placeholder="必须为数字字母混合，长度8-12位"
+						class="input-style" size="30" maxlength="30" name="pass"
+						type="text" />
+				</p>
+				<div id="level" class="pw-strength">
+					<label>密码强度监测<sup>*</sup>：
+					</label> <span class="pwd_qiang">
+						<div class="pw-bar"></div>
+						<div class="pw-bar-on"></div>
+						<div class="pw-txt">
+							<span>弱</span> <span>中</span> <span>强</span>
+						</div>
+					</span>
+				</div>
+				<p>
+					<label>确认密码<sup>*</sup>：
+					</label><input type="text" />
+				</p>
+				<p>
+					<label>手机<sup>*</sup>：
+					</label><input type="text"
+						placeholder="办理进网业务的手机应与中国泰尔实验室预留厂家信息一致，本网站的验证码将发送该
+手机号上，请输入验证码验证。" />
+				</p>
+				<p class="telyzm">
+					<label>手机验证码<sup>*</sup>：
+					</label><input type="text" /><span>发送验证码</span>
+				</p>
+				<p class="graphical">
+					<label> 图形验证码<sup>*</sup>：
+					</label><input type="text" /><img src="images/yzm1.png"><span>换一张</span>
+				</p>
+			</form>
+			<span class="registersm registersm1"><input type="checkbox"
+				name="" id="chec1" checked><label class="tag-label"
+				for="chec1"></label>我已阅读并同意《<a href="#">泰尔视角服务条款</a>》《<a href="#">法律声明和隐私权政策</a>》</span>
+			<button class="immediately">立即注册</button>
+		</div>
+	</section>
+	<script type="text/javascript">
+    $(function(){
+        $('#pass').keyup(function () {
+            var strongRegex = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
+            var mediumRegex = new RegExp("^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
+            var enoughRegex = new RegExp("(?=.{6,}).*", "g");
+
+            if (false == enoughRegex.test($(this).val())) {
+                console.log('2221')
+                $('#level').removeClass('pw-weak');
+                $('#level').removeClass('pw-medium');
+                $('#level').removeClass('pw-strong');
+                $('#level').addClass(' pw-defule');
+                //密码小于六位的时候，密码强度图片都为灰色
+            }
+            else if (strongRegex.test($(this).val())) {
+                console.log('1111')
+                $('#level').removeClass('pw-weak');
+                $('#level').removeClass('pw-medium');
+                $('#level').removeClass('pw-strong');
+                $('#level').addClass(' pw-strong');
+                //密码为八位及以上并且字母数字特殊字符三项都包括,强度最强
+            }
+            else if (mediumRegex.test($(this).val())) {
+                console.log('333')
+                $('#level').removeClass('pw-weak');
+                $('#level').removeClass('pw-medium');
+                $('#level').removeClass('pw-strong');
+                $('#level').addClass(' pw-medium');
+                //密码为七位及以上并且字母、数字、特殊字符三项中有两项，强度是中等
+            }
+            else {
+                console.log('444')
+                $('#level').removeClass('pw-weak');
+                $('#level').removeClass('pw-medium');
+                $('#level').removeClass('pw-strong');
+                $('#level').addClass('pw-weak');
+                //如果密码为6为及以下，就算字母、数字、特殊字符三项都包括，强度也是弱的
+            }
+            return true;
+        });
+    })
+</script>
+
+	<footer class="foot">
+		<div class="w1200">
+			<span class="hrefto">友情链接</span> <a href="#">中国信息通信研究院</a><a href="#">泰尔网</a><a
+				href="#">南方分院(深圳)</a> <a href="#">华东分院(上海)</a><a href="#">西部分院(重庆)</a>
+			<a href="#">中国信息通信研究院</a><a href="#">泰尔网</a><a href="#">南方分院(深圳)</a>
+			<a href="#">华东分院(上海)</a><a href="#">西部分院(重庆)</a> <a href="#">中国信息通信研究院</a><a
+				href="#">泰尔网</a><a href="#">南方分院(深圳)</a> <a href="#">华东分院(上海)</a><a
+				href="#">西部分院(重庆)</a> <a href="#">中国信息通信研究院</a><a href="#">泰尔网</a><a
+				href="#">南方分院(深圳)</a> <a href="#">华东分院(上海)</a><a href="#">西部分院(重庆)</a>
+		</div>
+	</footer>
+	<footer class="foots">
+		<div class="w1200">
+			<span>版权所有 © ：中国信息通信研究院（工信部电信研究院）
+				技术支持：中国信息通信研究院（工信部电信研究院）信息管理中心 京ICP备09013372号-25 联系我们</span>
+		</div>
+	</footer>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.ActivityJoinDao">
+
+	<sql id="activityJoinColumns">
+		a.id AS "id",
+		a.activity_id AS "activityId",
+		a.user_id AS
+		"user.id",
+		a.create_date AS "createDate",
+		u3.name AS "user.name"
+	</sql>
+
+	<sql id="activityJoinJoins">
+		LEFT JOIN sys_user u3 ON u3.id = a.user_id
+	</sql>
+
+	<select id="get" resultType="ActivityJoin">
+		SELECT
+		<include refid="activityJoinColumns" />
+		FROM tl_activity_join a
+		<include refid="activityJoinJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="ActivityJoin">
+		SELECT
+		<include refid="activityJoinColumns" />
+		FROM tl_activity_join a
+		<include refid="activityJoinJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="ActivityJoin">
+		SELECT
+		<include refid="activityJoinColumns" />
+		FROM tl_activity_join a
+		<include refid="activityJoinJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_activity_join(
+		id,
+		activity_id,
+		user_id,
+		create_date
+		) VALUES (
+		#{id},
+		#{activityId},
+		#{user.id},
+		#{createDate}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_activity_join SET
+		activity_id = #{activityId},
+		user_id = #{user.id}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		DELETE FROM tl_activity_join
+		WHERE id = #{id}
+	</update>
+	<select id="getNumOfJoinThisAct" resultType="int">
+		select count(0)
+		from tl_activity_join a
+		where a.activity_id=#{activityId}
+		and a.user_id =#{user.id}
+	</select>
+</mapper>

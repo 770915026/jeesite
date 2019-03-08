@@ -1,0 +1,141 @@
+.taier-certificate-header {
+	height: 130px;
+	background: #e9edf2;
+}
+
+.taier-certificate-header .title {
+	display: inline-block;
+	font-size: 24px;
+	color: #333;
+	padding-left: 40px;
+	margin-top: 50px;
+	background: url(../images/aboutUs/ico03.jpg) no-repeat;
+}
+
+.taier-certificate-header .search-input {
+	display: inline-block;
+	float: right;
+	width: 440px;
+	margin-top: 44px;
+	position: relative;
+}
+
+.taier-certificate-header .search-input .input {
+	width: 330px;
+	height: 46px;
+	line-height: 46px;
+	border: 1px solid #008bff;
+	border-radius: 3px;
+	background: #fff;
+	font-size: 14px;
+	color: #8d97a4;
+	padding: 0 20px;
+	outline: none;
+	box-sizing: border-box;
+}
+
+.taier-certificate-header .search-input .search {
+	position: absolute;
+	right: 18px;
+	top: 0;
+	width: 94px;
+	height: 46px;
+	background: url(../images/aboutUs/ico04.jpg) no-repeat;
+}
+
+.taier-container-nav {
+	margin-top: 10px;
+}
+
+.taier-container-nav span {
+	display: inline-block;
+	font-size: 14px;
+	color: #3d3d3d;
+}
+
+.taier-container-nav span a {
+	font-size: 14px;
+	color: #3d3d3d;
+	text-decoration: none;
+}
+
+.taier-list-box {
+	overflow: hidden;
+	margin-top: 10px;
+}
+
+.taier-list {
+	width: 969px;
+	margin: 0 auto;
+}
+
+.taier-list dd {
+	display: inline-block;
+	float: left;
+	width: 223px;
+	height: 340px;
+	margin: 40px 50px 0 50px;
+}
+
+.taier-list dd img {
+	width: 223px;
+	height: 297px;
+	border: 1px solid #dddddd;
+	box-sizing: border-box;
+}
+
+.taier-list dd p {
+	font-size: 14px;
+	color: #333;
+	text-align: center;
+	margin-top: 25px;
+}
+
+.taier-list-box .page-main {
+	width: 260px;
+	margin: 60px auto 0;
+	padding-bottom: 100px;
+	position: relative;
+}
+
+.taier-list-box .page-main .leftArrow {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 32px;
+	height: 32px;
+	cursor: pointer;
+	background: url(../images/news/ico05.jpg) left center no-repeat;
+}
+
+.taier-list-box .page-main .rightArrow {
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 32px;
+	height: 32px;
+	cursor: pointer;
+	background: url(../images/news/ico06.jpg) left center no-repeat;
+}
+
+.taier-list-box .page-main .page-box {
+	width: 190px;
+	margin: 0 auto;
+}
+
+.taier-list-box .page-main .page-box span {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	line-height: 32px;
+	font-size: 14px;
+	color: #333;
+	text-align: center;
+	margin: 0 0 0 10px;
+	cursor: pointer;
+}
+
+.taier-list-box .page-main .page-box span.current {
+	color: red;
+	font-weight: bold;
+}

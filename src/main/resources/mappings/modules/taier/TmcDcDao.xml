@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.TmcDcDao">
+
+	<sql id="tmcDcColumns">
+		a.bh AS "bh",
+		a.xh AS "xh",
+		a.cd AS "cd",
+		a.bcdy AS "bcdy",
+		a.rl AS "rl",
+		a.scc AS "scc",
+		a.zzs AS "zzs",
+		a.reader AS "reader",
+		a.writer AS "writer",
+		a.pk1 AS "pk1"
+	</sql>
+
+	<sql id="tmcDcJoins">
+	</sql>
+
+	<select id="get" resultType="TmcDc">
+		SELECT
+		<include refid="tmcDcColumns" />
+		FROM tmc_dc a
+		<include refid="tmcDcJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="TmcDc">
+		SELECT
+		<include refid="tmcDcColumns" />
+		FROM tmc_dc a
+		<include refid="tmcDcJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="TmcDc">
+		SELECT
+		<include refid="tmcDcColumns" />
+		FROM tmc_dc a
+		<include refid="tmcDcJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tmc_dc(
+		bh,
+		xh,
+		cd,
+		bcdy,
+		rl,
+		scc,
+		zzs,
+		reader,
+		writer,
+		pk1
+		) VALUES (
+		#{bh},
+		#{xh},
+		#{cd},
+		#{bcdy},
+		#{rl},
+		#{scc},
+		#{zzs},
+		#{reader},
+		#{writer},
+		#{pk1}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tmc_dc SET
+		xh = #{xh},
+		cd = #{cd},
+		bcdy = #{bcdy},
+		rl = #{rl},
+		scc = #{scc},
+		zzs = #{zzs},
+		reader = #{reader},
+		writer = #{writer}
+		WHERE pk1 = #{pk1}
+	</update>
+
+	<update id="delete">
+		DELETE FROM tmc_dc
+		WHERE id = #{id}
+	</update>
+	<delete id="deleteByBh">
+		DELETE FROM tmc_dc
+		WHERE bh=#{bh}
+	</delete>
+	<select id="getDcByPk1" resultType="TmcDc">
+		SELECT
+		<include refid="tmcDcColumns" />
+		FROM tmc_dc a
+		<include refid="tmcDcJoins" />
+		WHERE a.bh = #{pk1}
+	</select>
+</mapper>

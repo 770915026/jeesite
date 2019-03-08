@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.PolicyDao">
+
+	<sql id="policyColumns">
+		a.id AS "id",
+		a.title AS "title",
+		a.key_word AS "keyWord",
+		a.content AS "content",
+		a.create_date AS "createDate",
+		a.source AS
+		"source",
+		a.click_num AS "clickNum",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.type AS "type",
+		a.order_no AS "orderNo"
+	</sql>
+
+	<sql id="policyJoins">
+	</sql>
+
+	<select id="get" resultType="Policy">
+		SELECT
+		<include refid="policyColumns" />
+		FROM tl_policy a
+		<include refid="policyJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="Policy">
+		SELECT
+		<include refid="policyColumns" />
+		FROM tl_policy a
+		<include refid="policyJoins" />
+		<where>
+			a.del_flag != 1
+			<if test="title != null and title != ''">
+				AND a.title LIKE
+				<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+		</where>
+		ORDER BY a.order_no,a.update_date DESC
+	</select>
+
+	<select id="findAllList" resultType="Policy">
+		SELECT
+		<include refid="policyColumns" />
+		FROM tl_policy a
+		<include refid="policyJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		ORDER BY a.order_no,a.update_date DESC
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_policy(
+		id,
+		title,
+		key_word,
+		content,
+		create_date,
+		source,
+		click_num,
+		update_date,
+		type,
+		order_no
+		) VALUES (
+		#{id},
+		#{title},
+		#{keyWord},
+		#{content},
+		#{createDate},
+		#{source},
+		#{clickNum},
+		#{updateDate},
+		#{type},
+		#{orderNo}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_policy SET
+		title = #{title},
+		key_word=#{keyWord},
+		content = #{content},
+		source = #{source},
+		click_num = #{clickNum},
+		update_date = #{updateDate},
+		type = #{type},
+		order_no = #{orderNo}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE tl_policy SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	<select id="getPolicyPageByType" resultType="Policy">
+		SELECT
+		<include refid="policyColumns" />
+		FROM tl_policy a
+		<where>
+			a.del_flag = '0'
+			<if test="type != null and type!=''">
+				AND a.type=#{type}
+			</if>
+		</where>
+		ORDER BY a.order_no,a.update_date DESC
+	</select>
+	<update id="addActClickNum">
+		update tl_policy set click_num=click_num+1
+		where
+		id=#{id}
+	</update>
+	<update id="batchDel">
+		UPDATE tl_policy SET
+		del_flag = 1
+		WHERE id IN
+		<foreach collection="array" item="id" index="no" open="("
+			separator="," close=")">
+			#{id}
+		</foreach>
+
+	</update>
+	<update id="publishPolicy">
+		UPDATE tl_policy SET
+		del_flag = 0
+		WHERE id = #{id}
+	</update>
+</mapper>

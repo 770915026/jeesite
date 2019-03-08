@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.taier.dao.CertificateFirstPageDao">
+
+	<sql id="certificateFirstPageColumns">
+		a.id AS "id",
+		a.title AS "title",
+		a.img AS "img",
+		a.create_date AS "createDate"
+	</sql>
+
+	<sql id="certificateFirstPageJoins">
+	</sql>
+
+	<select id="get" resultType="CertificateFirstPage">
+		SELECT
+		<include refid="certificateFirstPageColumns" />
+		FROM tl_certificate_first_page a
+		<include refid="certificateFirstPageJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="CertificateFirstPage">
+		SELECT
+		<include refid="certificateFirstPageColumns" />
+		FROM tl_certificate_first_page a
+		<include refid="certificateFirstPageJoins" />
+		<where>
+
+			<if test="title != null and title != ''">
+				AND a.title LIKE
+				<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="CertificateFirstPage">
+		SELECT
+		<include refid="certificateFirstPageColumns" />
+		FROM tl_certificate_first_page a
+		<include refid="certificateFirstPageJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO tl_certificate_first_page(
+		id,
+		title,
+		img,
+		create_date
+		) VALUES (
+		#{id},
+		#{title},
+		#{img},
+		#{createDate}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tl_certificate_first_page SET
+		title = #{title},
+		img = #{img}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		DELETE FROM tl_certificate_first_page
+		WHERE id = #{id}
+	</update>
+	<select id="getOneCertificateFirstPage" resultType="CertificateFirstPage">
+
+		SELECT *
+		FROM (
+		SELECT t.*, rownum AS rn
+		FROM (
+		SELECT a.id AS "id", a.title AS "title", a.img AS "img", a.create_date AS
+		"createDate"
+		FROM tl_certificate_first_page a
+		ORDER BY a.create_date DESC
+		) t
+		)
+		WHERE rn = 1
+	</select>
+</mapper>
